@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THIRAN Class 9 English Interactive Workbook</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #3730a3;
+      --primary-light: #e0e7ff;
+      --accent-grade: #0d9488;
+      --accent-grade-light: #ccfbf1;
+      --success: #16a34a;
+      --success-bg: #dcfce7;
+      --warning: #ca8a04;
+      --warning-bg: #fef9c3;
+      --danger: #dc2626;
+      --danger-bg: #fee2e2;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+    }
+    * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body { margin: 0; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* Sticky Top Header & Top-Right Progress Bar */
+    .top-header {
+      position: sticky; top: 0; z-index: 100; background: var(--card);
+      border-bottom: 2px solid #e2e8f0; padding: 10px 24px;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04); gap: 15px; flex-wrap: wrap;
+    }
+    .header-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .gov-badge {
+      background: linear-gradient(135deg, #1e3a8a, #4f46e5); color: white; font-weight: 800;
+      padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; letter-spacing: 0.5px;
+    }
+    .student-badge { font-size: 0.9rem; color: var(--muted); font-weight: 600; }
+    .student-badge strong { color: var(--text); }
+    .btn-switch-user {
+      background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca;
+      padding: 6px 12px; border-radius: 6px; font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-switch-user:hover { background: #fecaca; }
+
+    /* Top-Right Visual Progress Bar */
+    .progress-widget {
+      display: flex; align-items: center; gap: 18px;
+      background: #f1f5f9; padding: 8px 16px; border-radius: 12px;
+      border: 1px solid #cbd5e1;
+    }
+    .stat-item { font-size: 0.83rem; color: var(--muted); font-weight: 600; }
+    .stat-item strong { color: var(--primary-dark); font-size: 0.92rem; }
+    .progress-container { width: 170px; }
+    .progress-label {
+      display: flex; justify-content: space-between; font-size: 0.76rem;
+      font-weight: 700; margin-bottom: 4px; color: var(--text);
+    }
+    .progress-track {
+      width: 100%; height: 10px; background: #cbd5e1;
+      border-radius: 999px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; width: 0%; background: linear-gradient(90deg, #4f46e5, #16a34a);
+      transition: width 0.4s ease;
+    }
+
+    /* Welcome / Login Overlay Screen */
+    #welcome-screen {
+      position: fixed; inset: 0; background: linear-gradient(135deg, #0a1931 0%, #1e3a8a 100%);
+      z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px;
+      overflow-y: auto;
+    }
+    .welcome-card {
+      background: var(--card); max-width: 560px; width: 100%; border-radius: 16px;
+      padding: 30px 35px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.45); margin: auto;
+    }
+    .welcome-card h1 { margin: 0 0 6px; color: var(--primary); font-size: 1.65rem; }
+    .welcome-card p.sub { margin: 0 0 18px; color: var(--muted); font-size: 0.9rem; line-height: 1.45; }
+
+    /* Mode Tabs */
+    .auth-tabs {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      background: #f1f5f9; padding: 5px; border-radius: 10px; margin-bottom: 20px;
+    }
+    .tab-btn {
+      padding: 10px; border: none; border-radius: 7px; font-weight: 700;
+      font-size: 0.9rem; cursor: pointer; background: transparent; color: var(--muted);
+      transition: all 0.2s;
+    }
+    .tab-btn.active { background: var(--card); color: var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group.full { grid-column: span 2; }
+    .form-group label { display: block; font-size: 0.83rem; font-weight: 700; margin-bottom: 5px; color: #334155; }
+    .form-group input, .form-group select {
+      width: 100%; padding: 10px 12px; border: 2px solid #cbd5e1; border-radius: 8px;
+      font-size: 0.94rem; transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
+    .btn-primary {
+      width: 100%; background: var(--primary); color: white; border: none;
+      padding: 12px; border-radius: 8px; font-size: 0.98rem; font-weight: 700;
+      cursor: pointer; transition: background 0.2s; margin-top: 6px;
+    }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .error-msg {
+      background: var(--danger-bg); color: var(--danger); padding: 10px 12px;
+      border-radius: 8px; font-size: 0.85rem; font-weight: 700; margin-bottom: 12px; display: none;
+    }
+
+    /* Quick Saved Profiles List */
+    .saved-profiles-box {
+      margin-top: 18px; border-top: 1px solid #e2e8f0; padding-top: 14px;
+    }
+    .saved-profiles-title {
+      font-size: 0.78rem; font-weight: 800; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 8px; letter-spacing: 0.5px;
+    }
+    .profile-pill {
+      display: flex; justify-content: space-between; align-items: center;
+      background: #f8fafc; border: 1px solid #cbd5e1; padding: 9px 12px;
+      border-radius: 8px; margin-bottom: 6px; cursor: pointer; transition: all 0.15s;
+    }
+    .profile-pill:hover { border-color: var(--primary); background: var(--primary-light); }
+    .profile-pill-info { font-size: 0.86rem; }
+    .profile-pill-info strong { color: var(--text); }
+    .profile-pill-meta { font-size: 0.78rem; color: var(--primary); font-weight: 700; }
+
+    /* Workspace Layout */
+    .workspace { display: flex; flex: 1; }
+    .sidebar {
+      width: 310px; background: var(--card); border-right: 1px solid #e2e8f0;
+      padding: 14px; overflow-y: auto; max-height: calc(100vh - 64px);
+      position: sticky; top: 64px;
+    }
+    .sidebar-section-title {
+      font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.8px;
+      color: white; background: var(--primary); padding: 6px 10px; border-radius: 6px;
+      font-weight: 800; margin: 10px 0 6px 0;
+    }
+    .sidebar-section-title.grade-lvl {
+      background: var(--accent-grade); margin-top: 16px;
+    }
+    .nav-btn {
+      width: 100%; padding: 8px 10px; border: none; background: transparent;
+      text-align: left; border-radius: 7px; cursor: pointer; font-size: 0.83rem;
+      font-weight: 600; color: #475569; display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 2px; transition: all 0.15s;
+    }
+    .nav-btn:hover { background: #f1f5f9; }
+    .nav-btn.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 800; }
+    .nav-btn.cert-btn {
+      background: linear-gradient(135deg, #0f2557, #1e3a8a); color: #fde047;
+      border: 1px solid #eab308; margin-top: 12px; padding: 11px 12px; font-weight: 800; font-size: 0.88rem;
+    }
+    .nav-btn.cert-btn:hover { opacity: 0.95; }
+    .nav-btn.cert-btn.active { background: linear-gradient(135deg, #071330, #172554); color: #facc15; box-shadow: 0 0 0 2px #eab308; }
+    .star { color: #cbd5e1; font-size: 1rem; }
+    .star.earned { color: #facc15; text-shadow: 0 0 2px rgba(0,0,0,0.4); }
+
+    /* Main Content Area */
+    .main { flex: 1; padding: 28px 36px; max-width: 980px; margin: 0 auto; }
+    .module-card {
+      background: var(--card); padding: 28px; border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.06); display: none;
+    }
+    .module-card.active { display: block; animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    .mod-header-row {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;
+    }
+    .mod-header-row h2 { margin: 0; color: var(--primary); border: none; padding: 0; font-size: 1.4rem; }
+    .set-badge {
+      background: var(--primary-light); color: var(--primary-dark); font-size: 0.76rem;
+      font-weight: 700; padding: 5px 10px; border-radius: 99px;
+    }
+    .grade-tag {
+      background: var(--accent-grade-light); color: #0f766e; font-size: 0.75rem;
+      font-weight: 800; padding: 4px 9px; border-radius: 6px; text-transform: uppercase;
+    }
+
+    .question-block {
+      background: #f8fafc; border: 1px solid #e2e8f0; padding: 18px;
+      border-radius: 8px; margin-bottom: 18px;
+    }
+    .question-title { font-weight: 700; margin-bottom: 8px; display: block; color: #1e293b; }
+    .passage {
+      background: #eff6ff; border-left: 4px solid var(--primary);
+      padding: 14px; margin-bottom: 16px; line-height: 1.6; border-radius: 0 8px 8px 0; font-size: 0.94rem;
+    }
+    .q-input {
+      padding: 8px 12px; border: 2px solid #cbd5e1; border-radius: 6px;
+      font-size: 0.94rem; min-width: 220px; max-width: 100%; margin: 3px 0;
+    }
+    .q-input:focus { outline: none; border-color: var(--primary); }
+    .correct-input { border-color: var(--success) !important; background-color: var(--success-bg) !important; }
+    .wrong-input { border-color: var(--danger) !important; background-color: var(--danger-bg) !important; }
+
+    .btn-check {
+      background: var(--primary); color: white; border: none; padding: 11px 22px;
+      border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer;
+    }
+    .btn-check:hover { background: var(--primary-dark); }
+    .btn-gold-download {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #09152b; border: 2px solid #fde047; padding: 11px 20px;
+      border-radius: 8px; font-size: 0.92rem; font-weight: 800; cursor: pointer;
+      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3); transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-gold-download:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(217, 119, 6, 0.45); }
+    .btn-secondary {
+      background: #e2e8f0; color: #1e293b; border: none; padding: 10px 16px;
+      border-radius: 8px; font-size: 0.88rem; font-weight: 600; cursor: pointer; margin-left: 8px;
+    }
+    .btn-shuffle {
+      background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; padding: 10px 14px;
+      border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; margin-left: 8px;
+    }
+    .btn-shuffle:hover { background: #e2e8f0; color: var(--text); }
+    .feedback { margin-top: 15px; font-weight: 700; padding: 12px; border-radius: 8px; display: none; }
+
+    /* ============================================================
+       ROYAL BLUE & GOLDEN LETTERS CERTIFICATE STYLING
+       ============================================================ */
+    .certificate-frame {
+      background: radial-gradient(circle at center, #1e3a8a 0%, #0f2557 55%, #071330 100%);
+      border: 6px solid #d4af37;
+      outline: 2px solid #fef08a;
+      outline-offset: -12px;
+      padding: 26px 26px 20px;
+      border-radius: 12px;
+      text-align: center;
+      position: relative;
+      margin-bottom: 16px;
+      box-shadow: 0 14px 32px rgba(7, 19, 48, 0.4), inset 0 0 50px rgba(250, 204, 21, 0.1);
+      color: #fef08a;
+      overflow: hidden;
+    }
+    .certificate-frame::before, .certificate-frame::after {
+      content: "✦"; position: absolute; top: 14px; font-size: 1.35rem; color: #facc15;
+    }
+    .certificate-frame::before { left: 20px; }
+    .certificate-frame::after { right: 20px; }
+
+    .cert-emblem {
+      width: 50px; height: 50px; margin: 0 auto 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fef08a 0%, #eab308 60%, #a16207 100%);
+      border: 2.5px solid #fffbeb;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; color: #071330;
+      box-shadow: 0 0 16px rgba(250, 204, 21, 0.5);
+    }
+    .cert-header {
+      font-size: 0.82rem; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; color: #fde047;
+    }
+    .cert-title {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-size: 1.85rem; font-weight: 900; margin: 5px 0 6px;
+      color: #fde047;
+      background: linear-gradient(180deg, #fffbeb 0%, #fde047 45%, #eab308 85%, #ca8a04 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-transform: uppercase; letter-spacing: 1.2px;
+    }
+    .cert-subtitle {
+      margin: 2px 0 5px; color: #fde68a; font-size: 0.88rem; font-style: italic;
+    }
+    .cert-student-name {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-size: 1.75rem; font-weight: 900;
+      color: #fef08a;
+      background: linear-gradient(180deg, #ffffff 0%, #fef08a 50%, #f59e0b 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      border-bottom: 2px solid #eab308;
+      display: inline-block; padding: 0 26px 3px; margin: 3px 0 8px;
+    }
+    .cert-details {
+      font-size: 0.92rem; line-height: 1.45; color: #fef9c3;
+      max-width: 680px; margin: 3px auto 10px;
+    }
+    .cert-details strong { color: #facc15; }
+
+    .congrats-banner {
+      background: rgba(250, 204, 21, 0.14); color: #fef08a;
+      border: 1.5px solid #eab308; padding: 9px 14px; border-radius: 8px;
+      font-weight: 700; margin: 8px auto; max-width: 680px;
+      line-height: 1.4; font-size: 0.86rem;
+    }
+
+    .cert-stats-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+      margin: 12px auto; max-width: 640px;
+    }
+    .cert-stat-card {
+      background: rgba(7, 19, 48, 0.7); border: 1.5px solid #eab308;
+      padding: 8px 10px; border-radius: 8px;
+    }
+    .cert-stat-card span {
+      display: block; font-size: 0.66rem; color: #fde68a;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 2px;
+    }
+    .cert-stat-card strong { font-size: 1.2rem; color: #facc15; }
+    .cert-dates-line { font-size: 0.76rem; color: #fde68a; margin: 8px 0 0; opacity: 0.92; }
+    .cert-designer-credit {
+      margin-top: 10px; padding-top: 7px;
+      border-top: 1px solid rgba(234, 179, 8, 0.45);
+      font-size: 0.8rem; font-weight: 800; letter-spacing: 1.3px;
+      text-transform: uppercase; color: #facc15;
+    }
+
+    /* Compact 25-Module Daily Work Log Section */
+    .log-section-header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin: 6px 0 6px; flex-wrap: wrap; gap: 6px;
+    }
+    .log-section-header h3 { margin: 0; font-size: 1rem; color: #0f2557; }
+    .log-section-header p { margin: 0; color: var(--muted); font-size: 0.78rem; }
+
+    .log-grid-two-col {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .log-table { width: 100%; border-collapse: collapse; font-size: 0.76rem; text-align: left; }
+    .log-table th, .log-table td { border: 1px solid #cbd5e1; padding: 4.5px 7px; }
+    .log-table th { background: #0f2557; color: #fde047; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; }
+    .log-table tr:nth-child(even) { background: #f8fafc; }
+    .badge-done { background: var(--success-bg); color: var(--success); padding: 1.5px 6px; border-radius: 99px; font-weight: 700; font-size: 0.68rem; display: inline-block; }
+    .badge-pending { background: #f1f5f9; color: var(--muted); padding: 1.5px 6px; border-radius: 99px; font-weight: 600; font-size: 0.68rem; display: inline-block; }
+
+    /* Bottom Footer Credit */
+    .app-footer {
+      background: #0a1931; color: #fde047; text-align: center;
+      padding: 12px 20px; font-size: 0.86rem; font-weight: 700;
+      letter-spacing: 0.8px; border-top: 2px solid #eab308; margin-top: auto;
+    }
+
+    /* ============================================================
+       STRICT SINGLE-PAGE A4 PORTRAIT PRINT STYLES (ALL 25 MODULES)
+       ============================================================ */
+    @page {
+      size: A4 portrait;
+      margin: 5mm 7mm;
+    }
+    @media print {
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      html, body {
+        width: 100%; height: auto; margin: 0 !important; padding: 0 !important; background: #ffffff !important;
+      }
+      .top-header, .sidebar, .no-print, .app-footer, #welcome-screen, #modules-container {
+        display: none !important;
+      }
+      .workspace, .main {
+        display: block !important; width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important;
+      }
+      #cert-view {
+        display: block !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; border: none !important;
+        page-break-inside: avoid !important; break-inside: avoid !important;
+      }
+      .certificate-frame {
+        padding: 10px 16px 8px !important; margin-bottom: 6px !important;
+        border-width: 4px !important; outline-width: 1.5px !important; outline-offset: -7px !important;
+        border-radius: 8px !important; box-shadow: none !important;
+      }
+      .cert-emblem { width: 30px !important; height: 30px !important; font-size: 0.95rem !important; margin: 0 auto 3px !important; }
+      .cert-header { font-size: 0.64rem !important; letter-spacing: 1.4px !important; }
+      .cert-title {
+        font-size: 1.25rem !important; margin: 2px 0 3px !important;
+        background: none !important; -webkit-text-fill-color: #fde047 !important; color: #fde047 !important; filter: none !important;
+      }
+      .cert-subtitle { font-size: 0.7rem !important; margin: 1px 0 2px !important; }
+      .cert-student-name {
+        font-size: 1.22rem !important; padding: 0 16px 2px !important; margin: 1px 0 4px !important;
+        background: none !important; -webkit-text-fill-color: #ffffff !important; color: #ffffff !important; filter: none !important;
+      }
+      .cert-details { font-size: 0.74rem !important; line-height: 1.3 !important; margin: 2px auto 4px !important; }
+      .congrats-banner { padding: 5px 10px !important; margin: 4px auto !important; font-size: 0.69rem !important; line-height: 1.25 !important; }
+      .cert-stats-grid { gap: 8px !important; margin: 5px auto !important; max-width: 540px !important; }
+      .cert-stat-card { padding: 4px 6px !important; border-radius: 5px !important; }
+      .cert-stat-card span { font-size: 0.55rem !important; }
+      .cert-stat-card strong { font-size: 0.92rem !important; }
+      .cert-dates-line { font-size: 0.62rem !important; margin-top: 4px !important; }
+      .cert-designer-credit { margin-top: 5px !important; padding-top: 3px !important; font-size: 0.64rem !important; }
+
+      .log-section-header { margin: 3px 0 3px !important; }
+      .log-section-header h3 { font-size: 0.78rem !important; }
+      .log-section-header p { font-size: 0.62rem !important; }
+      .log-grid-two-col { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+      .log-table { font-size: 0.61rem !important; }
+      .log-table th, .log-table td { padding: 2.8px 4px !important; line-height: 1.1 !important; }
+      .log-table th { font-size: 0.58rem !important; }
+      .badge-done, .badge-pending { font-size: 0.56rem !important; padding: 1px 4px !important; }
+    }
+
+    @media (max-width: 850px) {
+      .workspace { flex-direction: column; }
+      .sidebar { width: 100%; max-height: none; position: static; }
+      .main { padding: 18px; }
+      .log-grid-two-col { grid-template-columns: 1fr; }
+      .cert-stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- WELCOME & MULTI-STUDENT LOGIN MODAL -->
+  <div id="welcome-screen">
+    <div class="welcome-card">
+      <h1>THIRAN Class 9 English Workbook</h1>
+      <p class="sub">Complete Interactive Edition covering <strong>15 Fundamental Language Skills</strong> + <strong>10 Grade Level Skills</strong> (25 Modules). Log in with your <strong>Roll Number &amp; School Name</strong> to resume!</p>
+
+      <div class="auth-tabs">
+        <button type="button" class="tab-btn active" id="tab-login-btn" onclick="switchAuthTab('login')">🔄 Resume My Workbook</button>
+        <button type="button" class="tab-btn" id="tab-reg-btn" onclick="switchAuthTab('register')">✨ New Class 9 Student</button>
+      </div>
+
+      <div id="auth-error" class="error-msg"></div>
+
+      <!-- TAB 1: RETURNING STUDENT LOGIN -->
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="login-roll">Roll Number *</label>
+            <input type="text" id="login-roll" required placeholder="e.g., 901">
+          </div>
+          <div class="form-group">
+            <label for="login-school">School Name *</label>
+            <input type="text" id="login-school" required placeholder="e.g., GHSS Chinnasalem">
+          </div>
+        </div>
+        <button type="submit" class="btn-primary">Resume My Personalized Set &rarr;</button>
+
+        <div class="saved-profiles-box" id="saved-profiles-container" style="display:none;">
+          <div class="saved-profiles-title">📂 Or Quick-Select Your Saved Profile on This Device:</div>
+          <div id="saved-profiles-list"></div>
+        </div>
+      </form>
+
+      <!-- TAB 2: NEW STUDENT REGISTRATION -->
+      <form id="register-form" style="display:none;" onsubmit="handleRegister(event)">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label for="reg-name">Student Full Name *</label>
+            <input type="text" id="reg-name" required placeholder="e.g., Raju N.">
+          </div>
+          <div class="form-group">
+            <label for="reg-class">Class *</label>
+            <select id="reg-class" required>
+              <option value="Class 9" selected>Class 9</option>
+              <option value="Class 8">Class 8</option>
+              <option value="Class 7">Class 7</option>
+              <option value="Class 6">Class 6</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="reg-sec">Section *</label>
+            <input type="text" id="reg-sec" required placeholder="e.g., B">
+          </div>
+          <div class="form-group">
+            <label for="reg-roll">Roll Number * (Recall Key)</label>
+            <input type="text" id="reg-roll" required placeholder="e.g., 901">
+          </div>
+          <div class="form-group">
+            <label for="reg-school">School Name * (Recall Key)</label>
+            <input type="text" id="reg-school" required placeholder="e.g., GHSS Chinnasalem">
+          </div>
+        </div>
+        <button type="submit" class="btn-primary">Generate My Class 9 Workbook &rarr;</button>
+      </form>
+      <div style="text-align:center; margin-top:16px; font-size:0.8rem; color:#64748b; font-weight:700;">
+        Designed by Thiraviya Kumar G
+      </div>
+    </div>
+  </div>
+
+  <!-- STICKY TOP HEADER WITH TOP-RIGHT PROGRESS BAR -->
+  <header class="top-header">
+    <div class="header-left">
+      <div class="gov-badge">THIRAN CLASS 9 • 2025–2026</div>
+      <div class="student-badge" id="header-student-info">Not Logged In</div>
+      <button class="btn-switch-user" onclick="logoutCurrentStudent()">🔄 Switch Student</button>
+    </div>
+
+    <div class="progress-widget">
+      <div class="stat-item">⭐ Modules: <strong id="hdr-modules">0 / 25</strong></div>
+      <div class="stat-item">⏱️ Pace Timer: <strong id="hdr-timer">0m 0s</strong></div>
+      <div class="progress-container">
+        <div class="progress-label">
+          <span>Mastery Progress</span>
+          <span id="hdr-percent">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="hdr-bar"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE -->
+  <div class="workspace">
+    <aside class="sidebar">
+      <div class="sidebar-section-title">Part I: Fundamental Skills (1–15)</div>
+      <div id="nav-list-fundamental"></div>
+
+      <div class="sidebar-section-title grade-lvl">Part II: Grade 9 Skills (16–25)</div>
+      <div id="nav-list-grade"></div>
+
+      <button class="nav-btn cert-btn" id="btn-cert-nav" onclick="showCertificate()">
+        <span>🎓 A4 Certificate &amp; Work Log</span>
+        <span>&rarr;</span>
+      </button>
+    </aside>
+
+    <main class="main">
+      <div id="modules-container"></div>
+
+      <!-- SINGLE-PAGE A4 PORTRAIT CERTIFICATE & DAILY WORK LOG VIEW -->
+      <div class="module-card" id="cert-view">
+        <div class="no-print" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+          <h2 style="margin:0; border:none;">🎓 Single-Page A4 Certificate &amp; 25-Module Log</h2>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <button class="btn-gold-download" onclick="downloadA4PortraitSheet()">⬇️ Download A4 Certificate &amp; Log (PNG)</button>
+            <button class="btn-check" onclick="window.print()">🖨️ Print / Save 1-Page A4 PDF</button>
+            <button class="btn-secondary" style="margin-left:0;" onclick="resetCurrentStudent()">🗑️ Reset My Progress</button>
+          </div>
+        </div>
+
+        <!-- ROYAL BLUE & GOLDEN CERTIFICATE -->
+        <div class="certificate-frame" id="certificate-box">
+          <div class="cert-emblem">🏆</div>
+          <div class="cert-header">Department of School Education • Tamil Nadu (THIRAN Class 9)</div>
+          <div class="cert-title">Certificate of Mastery &amp; Completion</div>
+          <p class="cert-subtitle">This prestigious certificate is proudly presented to</p>
+          <div class="cert-student-name" id="cert-name">Student Name</div>
+          <div class="cert-details" id="cert-meta">
+            Class &amp; Section • Roll No • School Name
+          </div>
+
+          <div class="congrats-banner" id="cert-congrats">
+            Keep going! Complete all 25 modules (15 Fundamental + 10 Grade Level Skills) at your own pace!
+          </div>
+
+          <div class="cert-stats-grid">
+            <div class="cert-stat-card">
+              <span>Overall Mastery Score</span>
+              <strong id="cert-mastery">0%</strong>
+            </div>
+            <div class="cert-stat-card">
+              <span>Total Completion Time</span>
+              <strong id="cert-duration">0m 0s</strong>
+            </div>
+            <div class="cert-stat-card">
+              <span>Modules Completed</span>
+              <strong id="cert-mod-count">0 / 25</strong>
+            </div>
+          </div>
+
+          <p class="cert-dates-line" id="cert-span-dates">
+            Started On: -- | Last Activity: --
+          </p>
+
+          <div class="cert-designer-credit">
+            ✦ Designed by Thiraviya Kumar G ✦
+          </div>
+        </div>
+
+        <!-- COMPACT TWO-COLUMN 25-MODULE DAILY WORK LOG TABLE (FITS ON 1 A4 PAGE) -->
+        <div class="log-section-header">
+          <h3>📅 Daily Work Log (Part I: 15 Fundamental Skills &amp; Part II: 10 Grade Level Skills)</h3>
+          <p>All 25 modules formatted to fit on a single A4 Portrait page.</p>
+        </div>
+        <div class="log-grid-two-col">
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th>Part I: Fundamental (1–15)</th>
+                <th>Status</th>
+                <th>Score</th>
+                <th>Completed On</th>
+              </tr>
+            </thead>
+            <tbody id="log-table-left"></tbody>
+          </table>
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th>Part II: Grade 9 Skills (16–25)</th>
+                <th>Status</th>
+                <th>Score</th>
+                <th>Completed On</th>
+              </tr>
+            </thead>
+            <tbody id="log-table-right"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- BOTTOM LINE CREDIT FOOTER -->
+  <footer class="app-footer">
+    THIRAN Class 9 English Interactive Workbook (Fundamental &amp; Grade Level Skills) • Designed by Thiraviya Kumar G
+  </footer>
+
+  <script>
+    const QUESTIONS_PER_MODULE = 5;
+
+    // ============================================================================
+    // COMPLETE CLASS 9 QUESTION BANK: 25 MODULES (15 FUNDAMENTAL + 10 GRADE LEVEL)
+    // ============================================================================
+    const MODULES_DATA = [
+      // ---------------- PART 1: FUNDAMENTAL LANGUAGE SKILLS (Pages 1-65) ----------------
+      {
+        id: 1, category: "fundamental", title: "1. Self Introduction",
+        desc: "Family members and Ravi & Rani's family picture (Pages 1–3).",
+        passage: "Family Picture (Page 2): Ravi (father) and Rani (mother) have three children: Hari (older boy), Pavi (young girl), and baby Arun in Rani's arms.",
+        questionPool: [
+          { id: "m1q1", q: "Write the missing first letter: _rother (Family member)", type: "text", ans: "brother", hint: "Type: Brother" },
+          { id: "m1q2", q: "Write the missing first letter: _unt", type: "text", ans: "aunt", hint: "Type: Aunt" },
+          { id: "m1q3", q: "Write the missing first letter: _ousin", type: "text", ans: "cousin", hint: "Type: Cousin" },
+          { id: "m1q4", q: "Write the missing first letter: _aughter", type: "text", ans: "daughter", hint: "Type: Daughter" },
+          { id: "m1q5", q: "How many children do Ravi and Rani have?", type: "select", options: ["Two", "Three", "Four"], ans: "Three" },
+          { id: "m1q6", q: "Who is baby Arun's brother?", type: "select", options: ["Hari", "Ravi", "Pavi"], ans: "Hari" },
+          { id: "m1q7", q: "What is the name of Pavi's father?", type: "select", options: ["Ravi", "Hari", "Arun"], ans: "Ravi" },
+          { id: "m1q8", q: "Who is the youngest among the three children?", type: "select", options: ["Arun", "Hari", "Pavi"], ans: "Arun" }
+        ]
+      },
+      {
+        id: 2, category: "fundamental", title: "2. Conversation",
+        desc: "Telephonic conversation (David & Shiva) and Thara's good qualities (Pages 4–8).",
+        passage: "Telephonic Call: David says 'Hello! This is David here. I'm going to visit the museum this weekend.' Shiva says 'Let's go together.'\n\nPassage: I am Thara. I love and respect all elders. I feel happy to help the needy people. I treat everyone equally. I like helping the animals. I feed the birds. I am a kind girl.",
+        questionPool: [
+          { id: "m2q1", q: "Fill in the missing letters: c _ k _ (A sweet baked food)", type: "text", ans: "cake", hint: "Type: cake" },
+          { id: "m2q2", q: "Complete the sentence: The bat is in front of the ______ (gate / rains).", type: "select", options: ["gate", "rains", "ant"], ans: "gate" },
+          { id: "m2q3", q: "Where is David going to visit this weekend?", type: "select", options: ["The museum", "The beach", "The zoo"], ans: "The museum" },
+          { id: "m2q4", q: "In the telephone conversation, Shiva says: '______ are you going this weekend?'", type: "select", options: ["Where", "Who", "What"], ans: "Where" },
+          { id: "m2q5", q: "How does Thara treat everyone?", type: "select", options: ["Equally", "Rudely", "Unfairly"], ans: "Equally" },
+          { id: "m2q6", q: "Who does Thara love and respect?", type: "select", options: ["All elders", "Only strangers", "Nobody"], ans: "All elders" },
+          { id: "m2q7", q: "What kind of girl is Thara?", type: "select", options: ["A kind girl", "A lazy girl", "An angry girl"], ans: "A kind girl" },
+          { id: "m2q8", q: "Complete the sentence (Page 8): The ______ is a wonderful place. We play there.", type: "select", options: ["park", "cave", "kitchen"], ans: "park" }
+        ]
+      },
+      {
+        id: 3, category: "fundamental", title: "3. Opinions & Asking Questions",
+        desc: "Framing Wh-questions, Healthy vs. Junk foods, and Saran at the zoo (Pages 9–12).",
+        passage: "Saran works in a zoo. He goes to feed the lion. He searches for the key to open the door. The key is with the monkey. He gives some mangoes to the monkey. The monkey puts the key down and takes the mangoes. Saran takes the key and feeds the lion.",
+        questionPool: [
+          { id: "m3q1", q: "Frame a question for: 'Vino is hiding inside the box.'", type: "select", options: ["Where is Vino hiding?", "When is Vino hiding?", "Why is Vino crying?"], ans: "Where is Vino hiding?" },
+          { id: "m3q2", q: "Frame a question for: 'Mani fell down the stairs.'", type: "select", options: ["Who fell down the stairs?", "What is Mani eating?", "Where is the box?"], ans: "Who fell down the stairs?" },
+          { id: "m3q3", q: "Frame a question for: 'Gayu was sleeping last evening.'", type: "select", options: ["What was Gayu doing last evening?", "Where did Gayu go?", "Who is singing?"], ans: "What was Gayu doing last evening?" },
+          { id: "m3q4", q: "Which of the following is a Healthy Food?", type: "select", options: ["Fresh fruits and vegetables", "Sugary soda and chips", "Deep-fried burger"], ans: "Fresh fruits and vegetables" },
+          { id: "m3q5", q: "Where does Saran work?", type: "select", options: ["In a zoo", "In a museum", "In a library"], ans: "In a zoo" },
+          { id: "m3q6", q: "Which animal had the key to the lion's door?", type: "select", options: ["The monkey", "The tiger", "The bear"], ans: "The monkey" },
+          { id: "m3q7", q: "What did Saran give to the monkey to get the key back?", type: "select", options: ["Some mangoes", "Some bananas", "Some bread"], ans: "Some mangoes" },
+          { id: "m3q8", q: "Complete the sentence (Page 9): The bees fly to the ______.", type: "select", options: ["hive", "cheese", "bed"], ans: "hive" }
+        ]
+      },
+      {
+        id: 4, category: "fundamental", title: "4. Responding to Instructions",
+        desc: "Sight words, matching instructions, and Raju at the market (Pages 13–15).",
+        passage: "Raju goes to the market. He buys some apples, bananas, watermelons, tomatoes, onions, carrots, potatoes and oranges. He makes juice with oranges. He drinks it and feels happy.",
+        questionPool: [
+          { id: "m4q1", q: "Tina is a small ______ (kid / bike).", type: "select", options: ["kid", "bike", "nine"], ans: "kid" },
+          { id: "m4q2", q: "He can ride a ______ (bike / big).", type: "select", options: ["bike", "big", "like"], ans: "bike" },
+          { id: "m4q3", q: "The elephant is ______ (big / nine).", type: "select", options: ["big", "nine", "kid"], ans: "big" },
+          { id: "m4q4", q: "Now the time is ______ o'clock.", type: "select", options: ["nine", "bike", "like"], ans: "nine" },
+          { id: "m4q5", q: "I ______ mangoes.", type: "select", options: ["like", "kid", "nine"], ans: "like" },
+          { id: "m4q6", q: "Where does Raju go to buy fruits and vegetables?", type: "select", options: ["To the market", "To the zoo", "To the post office"], ans: "To the market" },
+          { id: "m4q7", q: "Which fruit does Raju use to make juice?", type: "select", options: ["Oranges", "Potatoes", "Onions"], ans: "Oranges" },
+          { id: "m4q8", q: "Which of these vegetables did Raju buy at the market?", type: "select", options: ["Tomatoes, onions, carrots, potatoes", "Brinjals and cabbage", "Beans and peas"], ans: "Tomatoes, onions, carrots, potatoes" }
+        ]
+      },
+      {
+        id: 5, category: "fundamental", title: "5. Picture Comprehension",
+        desc: "Ravi at the lake, classroom riddles, park scene, and Varun making dosa (Pages 16–19).",
+        passage: "After coming back home, Varun helped Amma to store the vegetables, fruits and cereals in their places. She then washed the rice and black gram and soaked them in water. Amma and Varun grinded them and made the batter together for making delicious dosa for dinner.",
+        questionPool: [
+          { id: "m5q1", q: "Riddle (Page 17): 'It is black. It is on the classroom wall.' What is it?", type: "select", options: ["Blackboard", "Clock", "Ruler"], ans: "Blackboard" },
+          { id: "m5q2", q: "Riddle (Page 17): 'It is round. It shows the time.' What is it?", type: "select", options: ["Clock", "Book", "School bag"], ans: "Clock" },
+          { id: "m5q3", q: "Riddle (Page 17): 'It is near the ruler. It has many pages in it.' What is it?", type: "select", options: ["Book", "Ball", "Blackboard"], ans: "Book" },
+          { id: "m5q4", q: "Riddle (Page 17): 'Children carry it to school. It holds a pencil box, books and notebooks.'", type: "select", options: ["School bag", "Clock", "Ball"], ans: "School bag" },
+          { id: "m5q5", q: "In the park picture (Page 18), who are sitting on the wooden bench?", type: "select", options: ["Grandfather and Grandmother", "Two little puppies", "Teachers"], ans: "Grandfather and Grandmother" },
+          { id: "m5q6", q: "In the park picture (Page 18), how many girls are painting on canvases?", type: "select", options: ["Two girls", "Five girls", "One boy"], ans: "Two girls" },
+          { id: "m5q7", q: "What ingredients did Amma wash and soak to make dosa batter?", type: "select", options: ["Rice and black gram", "Wheat and sugar", "Corn and oats"], ans: "Rice and black gram" },
+          { id: "m5q8", q: "What did Amma and Varun make for dinner using the batter?", type: "select", options: ["Delicious dosa", "Chapati", "Bread"], ans: "Delicious dosa" }
+        ]
+      },
+      {
+        id: 6, category: "fundamental", title: "6. Prepositions & Prepositional Verbs",
+        desc: "Two Friends & the Bear, Prepositional Phrases, and Prepositional Verbs (Pages 20–22).",
+        passage: "Once two friends were walking through the forest. Suddenly, they saw a large bear approaching them. One of the friends at once climbed a nearby tree. The other laid down on the ground breathless. The bear came near the man and advised him not to believe a false friend.",
+        questionPool: [
+          { id: "m6q1", q: "Once two friends were walking ______ (through / at) the forest.", type: "select", options: ["through", "at", "for"], ans: "through" },
+          { id: "m6q2", q: "One of the friends ______ (at / to) once climbed a nearby tree.", type: "select", options: ["at", "to", "in"], ans: "at" },
+          { id: "m6q3", q: "The other friend laid down ______ (on / in) the ground breathless.", type: "select", options: ["on", "in", "at"], ans: "on" },
+          { id: "m6q4", q: "In 'Rani went to a toy shop in the evening', what does 'in the evening' indicate?", type: "select", options: ["Time", "Place", "Position"], ans: "Time" },
+          { id: "m6q5", q: "In 'She reached home at 9 p.m.', what does 'at 9 p.m.' indicate?", type: "select", options: ["Time", "Place", "Position"], ans: "Time" },
+          { id: "m6q6", q: "Identify the prepositional verb in: 'The manager is dealing with a new customer.'", type: "select", options: ["dealing with", "is dealing", "new customer"], ans: "dealing with" },
+          { id: "m6q7", q: "Identify the prepositional verb in: 'She is looking after her brother.'", type: "select", options: ["looking after", "her brother", "she is"], ans: "looking after" },
+          { id: "m6q8", q: "Identify the prepositional verb in: 'The team is working on a project.'", type: "select", options: ["working on", "the team", "a project"], ans: "working on" }
+        ]
+      },
+      {
+        id: 7, category: "fundamental", title: "7. Types of Sentences",
+        desc: "Declarative, Interrogative, Imperative, and Exclamatory sentences (Pages 23–25).",
+        questionPool: [
+          { id: "m7q1", q: "Identify the sentence type: 'Keep off the grass.'", type: "select", options: ["Imperative Sentence", "Interrogative Sentence", "Exclamatory Sentence"], ans: "Imperative Sentence" },
+          { id: "m7q2", q: "Identify the sentence type: 'Have you lost your money?'", type: "select", options: ["Interrogative Sentence", "Declarative Sentence", "Imperative Sentence"], ans: "Interrogative Sentence" },
+          { id: "m7q3", q: "Identify the sentence type: 'I am reading a newspaper.'", type: "select", options: ["Declarative Sentence", "Interrogative Sentence", "Exclamatory Sentence"], ans: "Declarative Sentence" },
+          { id: "m7q4", q: "Identify the sentence type: 'What a tall building it is!'", type: "select", options: ["Exclamatory Sentence", "Imperative Sentence", "Interrogative Sentence"], ans: "Exclamatory Sentence" },
+          { id: "m7q5", q: "Change into Interrogative: 'The movie is interesting.'", type: "select", options: ["Is the movie interesting?", "Watch the interesting movie.", "What an interesting movie!"], ans: "Is the movie interesting?" },
+          { id: "m7q6", q: "Change into Imperative: 'Could you open the window?'", type: "select", options: ["Please open the window.", "Is the window open?", "What an open window!"], ans: "Please open the window." },
+          { id: "m7q7", q: "Change into Exclamatory: 'You look beautiful.'", type: "select", options: ["How beautiful you look!", "Do you look beautiful?", "Look beautiful."], ans: "How beautiful you look!" },
+          { id: "m7q8", q: "Change into Declarative: 'What a lovely day!'", type: "select", options: ["It is a very lovely day.", "Is it a lovely day?", "Have a lovely day."], ans: "It is a very lovely day." }
+        ]
+      },
+      {
+        id: 8, category: "fundamental", title: "8. Reading Comprehension",
+        desc: "The Sparrow & Hunter, Sonu & the Poor Man, and The Magic Pencil (Pages 26–30).",
+        passage: "Story 1: A little sparrow warned the birds on a big village tree about a hunter's net. All the birds planned well and flew away.\n\nStory 2: Sonu saw a poor man near a church sharing food from a cracked bowl with a street dog. On a cold rainy night, Sonu gave him a blanket, pillow, and food. Sonu's mother gave him money to buy and sell candles.\n\nStory 3: Anish found a talking magic pencil. The circle he drew asked for two eyes and some hair so it wouldn't look like a lollipop!",
+        questionPool: [
+          { id: "m8q1", q: "How did the hunter plan to catch the birds in the tree?", type: "select", options: ["He spread a net", "He shot an arrow", "He climbed the tree"], ans: "He spread a net" },
+          { id: "m8q2", q: "Who warned and helped the birds escape from the hunter?", type: "select", options: ["The little sparrow", "The hunter", "The street dog"], ans: "The little sparrow" },
+          { id: "m8q3", q: "Where did Sonu see the poor man?", type: "select", options: ["Near a church", "Near a cinema", "Inside a bus"], ans: "Near a church" },
+          { id: "m8q4", q: "With whom did the poor man share his food?", type: "select", options: ["A street dog", "A sparrow", "A monkey"], ans: "A street dog" },
+          { id: "m8q5", q: "What is the meaning of the word 'cracked' (as in 'cracked bowl')?", type: "select", options: ["broken", "perfect", "unbroken"], ans: "broken" },
+          { id: "m8q6", q: "What did Sonu's mother ask the poor man to buy and sell near the church?", type: "select", options: ["Candles", "Toys", "Balloons"], ans: "Candles" },
+          { id: "m8q7", q: "In 'The Magic Pencil', what was NOT easy for Anish?", type: "select", options: ["Writing and art works (drawing)", "Running and jumping", "Singing songs"], ans: "Writing and art works (drawing)" },
+          { id: "m8q8", q: "What did the talking circle say to Anish? 'Draw me some ______, I look like a lollipop!'", type: "select", options: ["hair", "shoes", "hands"], ans: "hair" }
+        ]
+      },
+      {
+        id: 9, category: "fundamental", title: "9. Narrating a Story",
+        desc: "Consonants, Changing Gender on the Farm, Bunya the Woodcutter, and Mala's Raincoat (Pages 31–35).",
+        passage: "Farm Passage (Page 32): A man lived with his son in a village. On that farm, he had two stallions, three cows, some hens and ducks. His mother brought lunch for him and his father.\n\nMala's Raincoat (Page 35): Mala's parents got her a red raincoat on Sunday. On Monday, Ma said, 'No Mala, not today. It is bright and sunny. If you wear it, it will be funny!'",
+        questionPool: [
+          { id: "m9q1", q: "Circle the odd word out that does NOT start with 'p': (pen, pin, mat, pot)", type: "select", options: ["mat", "pen", "pot"], ans: "mat" },
+          { id: "m9q2", q: "Circle the odd word out that does NOT start with 'q': (kite, queen, quiz, quick)", type: "select", options: ["kite", "queen", "quiz"], ans: "kite" },
+          { id: "m9q3", q: "When changing gender in the farm story (Page 32), 'A man lived with his son' becomes:", type: "select", options: ["A woman lived with her daughter", "A boy lived with his uncle", "A king lived with his prince"], ans: "A woman lived with her daughter" },
+          { id: "m9q4", q: "What is the opposite gender of 'stallion' (male horse)?", type: "select", options: ["mare", "cow", "hen"], ans: "mare" },
+          { id: "m9q5", q: "What is the opposite gender of 'cow'?", type: "select", options: ["bull", "drake", "rooster"], ans: "bull" },
+          { id: "m9q6", q: "In the story on Page 33, who was Bunya?", type: "select", options: ["A foolish boy and woodcutter who cried 'Tiger!'", "A wise fisherman", "A kind doctor"], ans: "A foolish boy and woodcutter who cried 'Tiger!'" },
+          { id: "m9q7", q: "Which famous fable is shown in the 4 pictures of the fox jumping for fruit on Page 34?", type: "select", options: ["The Fox and the Sour Grapes", "The Lion and the Mouse", "The Tortoise and the Hare"], ans: "The Fox and the Sour Grapes" },
+          { id: "m9q8", q: "Why did Mala's mother tell her not to wear the red raincoat on Monday?", type: "select", options: ["Because the sky was bright and sunny", "Because the raincoat was torn", "Because it was raining heavily"], ans: "Because the sky was bright and sunny" }
+        ]
+      },
+      {
+        id: 10, category: "fundamental", title: "10. Letter Writing - I",
+        desc: "Sound discrimination, formal leave letter to the Class Teacher, and Little Bear (Pages 36–40).",
+        questionPool: [
+          { id: "m10q1", q: "The snake made a loud ______ (his / hiss).", type: "select", options: ["hiss", "his"], ans: "hiss" },
+          { id: "m10q2", q: "You should ______ (save / safe) money for emergencies.", type: "select", options: ["save", "safe"], ans: "save" },
+          { id: "m10q3", q: "Please ______ (boat / vote) for your team.", type: "select", options: ["vote", "boat"], ans: "vote" },
+          { id: "m10q4", q: "He wore a warm ______ (packet / jacket) during the winter.", type: "select", options: ["jacket", "packet"], ans: "jacket" },
+          { id: "m10q5", q: "I was ______ (sick / school). So, I did not come to school.", type: "select", options: ["sick", "school", "come"], ans: "sick" },
+          { id: "m10q6", q: "I went to my ______ (aunt's wedding / sick). So, I did not attend the class.", type: "select", options: ["aunt's wedding", "sick", "come"], ans: "aunt's wedding" },
+          { id: "m10q7", q: "In a formal leave letter to the Class Teacher, what is the polite closing subscription?", type: "select", options: ["Yours obediently,", "Lots of hugs,", "Bye-bye,"], ans: "Yours obediently," },
+          { id: "m10q8", q: "In the story on Page 40, why couldn't the little elephants and lion cubs play with little bear?", type: "select", options: ["Because they would be late for school", "Because they were sleeping", "Because it was raining"], ans: "Because they would be late for school" }
+        ]
+      },
+      {
+        id: 11, category: "fundamental", title: "11. Letter Writing - II",
+        desc: "Initial consonant clusters (fl, sn, br, gl, bl, cl) and informal letters (Pages 41–44).",
+        passage: "Picnic Passage (Page 44): Reeta goes for a picnic with her friends. She brings tomato rice and potato chips for lunch. Riya brings poori and channa. Radha brings vegetable rice and mango juice. They share their lunch and enjoy eating.",
+        questionPool: [
+          { id: "m11q1", q: "The Sun shines ______ (bright / green).", type: "select", options: ["bright", "green", "spoon"], ans: "bright" },
+          { id: "m11q2", q: "The ______ (street / spoon) is very narrow.", type: "select", options: ["street", "spoon", "bright"], ans: "street" },
+          { id: "m11q3", q: "Her ______ (dress / street) is beautiful.", type: "select", options: ["dress", "street", "bright"], ans: "dress" },
+          { id: "m11q4", q: "He eats using a ______ (spoon / dress).", type: "select", options: ["spoon", "dress", "green"], ans: "spoon" },
+          { id: "m11q5", q: "Which of these words has an initial consonant cluster? (blank / bend)", type: "select", options: ["blank (bl-)", "bend"], ans: "blank (bl-)" },
+          { id: "m11q6", q: "Which of these words has an initial consonant cluster? (flower / fire)", type: "select", options: ["flower (fl-)", "fire"], ans: "flower (fl-)" },
+          { id: "m11q7", q: "What did Reeta bring for lunch at the picnic?", type: "select", options: ["Tomato rice and potato chips", "Poori and channa", "Bread and jam"], ans: "Tomato rice and potato chips" },
+          { id: "m11q8", q: "What did Radha bring for the picnic?", type: "select", options: ["Vegetable rice and mango juice", "Tomato rice", "Idli and sambar"], ans: "Vegetable rice and mango juice" }
+        ]
+      },
+      {
+        id: 12, category: "fundamental", title: "12. Dialogue Writing - I",
+        desc: "Ending consonant clusters and conversations with friends (Pages 45–48).",
+        passage: "Sarah's Trail (Page 45): On a foggy morning, Sarah carried a heavy black bag down the trail. As she walked past an old plant, she heard a rustling sound. She found a bird flapping in a trap. Gently, she used her hand to free the bird.",
+        questionPool: [
+          { id: "m12q1", q: "Complete with a word ending in a consonant cluster: 'As Sarah walked past an old ______ (plant / trap)...'", type: "select", options: ["plant", "see", "go"], ans: "plant" },
+          { id: "m12q2", q: "Complete with a word ending in a consonant cluster: 'Gently, she used her ______ (hand / sky) to free the bird.'", type: "select", options: ["hand", "sky", "to"], ans: "hand" },
+          { id: "m12q3", q: "Complete the word with an ending cluster: pri _ _ (using paper, ends with -nt)", type: "text", ans: "print", hint: "Type: print" },
+          { id: "m12q4", q: "Complete the word with an ending cluster: ma _ _ (to cover the face, ends with -sk)", type: "text", ans: "mask", hint: "Type: mask" },
+          { id: "m12q5", q: "Complete the word with an ending cluster: gi _ _ (a present, ends with -ft)", type: "text", ans: "gift", hint: "Type: gift" },
+          { id: "m12q6", q: "In Vasu and Velan's dialogue (Page 46), why are carrots good for us?", type: "select", options: ["They are good for our eyesight", "They make us fly", "They cure toothache"], ans: "They are good for our eyesight" },
+          { id: "m12q7", q: "In Mala and Kala's park dialogue (Page 47), on which day does Kala come to the park?", type: "select", options: ["Only on Sundays", "Every Monday", "Never"], ans: "Only on Sundays" },
+          { id: "m12q8", q: "In the passage on Page 48, what does Balu make to play with in the rain puddle?", type: "select", options: ["A paper boat", "A paper plane", "A mud castle"], ans: "A paper boat" }
+        ]
+      },
+      {
+        id: 13, category: "fundamental", title: "13. Dialogue Writing - II",
+        desc: "Initial & Ending Consonant Clusters, Lost Puppy Bruno, and Traffic Rules (Pages 49–54).",
+        passage: "Lost Puppy Story (Page 52): Two brothers, Sam and Tom, saw a lost puppy under a tree. Sam gave it biscuits. They taped a 'LOST PUPPY' poster on a tree. The next day, a little girl named Lily found her puppy, Bruno, and thanked them!",
+        questionPool: [
+          { id: "m13q1", q: "In the word 'drink', what is the initial cluster and ending cluster?", type: "select", options: ["Initial: dr- | Ending: -nk", "Initial: in- | Ending: -dr", "Initial: d- | Ending: -k"], ans: "Initial: dr- | Ending: -nk" },
+          { id: "m13q2", q: "In the word 'blast', what is the initial cluster and ending cluster?", type: "select", options: ["Initial: bl- | Ending: -st", "Initial: ba- | Ending: -lt", "Initial: st- | Ending: -bl"], ans: "Initial: bl- | Ending: -st" },
+          { id: "m13q3", q: "In the word 'grasp', what is the initial cluster and ending cluster?", type: "select", options: ["Initial: gr- | Ending: -sp", "Initial: ga- | Ending: -rp", "Initial: sp- | Ending: -gr"], ans: "Initial: gr- | Ending: -sp" },
+          { id: "m13q4", q: "In the word 'flask', what is the initial cluster and ending cluster?", type: "select", options: ["Initial: fl- | Ending: -sk", "Initial: fa- | Ending: -lk", "Initial: sk- | Ending: -fl"], ans: "Initial: fl- | Ending: -sk" },
+          { id: "m13q5", q: "What did Sam give the hungry puppy from his snack box?", type: "select", options: ["Some biscuits", "Some chocolates", "Some rice"], ans: "Some biscuits" },
+          { id: "m13q6", q: "What did Sam and Tom tape to a tree to help find the puppy's owner?", type: "select", options: ["A 'LOST PUPPY' poster", "A ribbon", "A balloon"], ans: "A 'LOST PUPPY' poster" },
+          { id: "m13q7", q: "Who was the owner of the lost puppy Bruno?", type: "select", options: ["A little girl named Lily", "Rohan", "Abinav"], ans: "A little girl named Lily" },
+          { id: "m13q8", q: "Traffic Rules (Page 54): Where must we always cross the road?", type: "select", options: ["At the zebra crossing", "In the middle of traffic", "At a sharp curve"], ans: "At the zebra crossing" }
+        ]
+      },
+      {
+        id: 14, category: "fundamental", title: "14. Paragraph Writing - I",
+        desc: "Digraphs, Tenzin's story 'The New Start', and Priya's village Negamam (Pages 55–60).",
+        passage: "The New Start (Pages 56–57): Tenzin is a boy from Tibet who moved to India (first Himachal Pradesh, then Karnataka). The refugee relief group found them a house. At his new school, Julie taught him art & English words, and Miss Malliga taught computers. His three friends were Binsa (from Nepal), Charles (taught football), and Nimmi (protected him from teasers).\n\nPriya's Village (Page 58): Priya lives in Negamam in Coimbatore district, famous for cotton sarees.",
+        questionPool: [
+          { id: "m14q1", q: "Which country did Tenzin come from before moving to India?", type: "select", options: ["Tibet", "Japan", "Sri Lanka"], ans: "Tibet" },
+          { id: "m14q2", q: "Who helped Tenzin's family find a house in India?", type: "select", options: ["The refugee relief group", "A football coach", "A shopkeeper"], ans: "The refugee relief group" },
+          { id: "m14q3", q: "Who was Tenzin's art and craft teacher who helped him learn English words?", type: "select", options: ["Julie", "Miss Malliga", "Binsa"], ans: "Julie" },
+          { id: "m14q4", q: "Which friend taught Tenzin how to play football?", type: "select", options: ["Charles", "Nimmi", "Wilson"], ans: "Charles" },
+          { id: "m14q5", q: "What wise thought does Tenzin share about boundaries between countries?", type: "select", options: ["When there is no boundary, there would not be any fight or weapons", "Every country should build higher walls", "People should never travel"], ans: "When there is no boundary, there would not be any fight or weapons" },
+          { id: "m14q6", q: "Priya lives in Negamam in Coimbatore district. What is Negamam famous for?", type: "select", options: ["Cotton sarees", "Wooden toys", " Jasmine flowers"], ans: "Cotton sarees" },
+          { id: "m14q7", q: "In the passage on Page 60, what does Wilson's mother help him make toys from?", type: "select", options: ["Waste things", "Gold and silver", "Glass bottles"], ans: "Waste things" },
+          { id: "m14q8", q: "Join the digraph 'ph' + 'rase' to form a word (Page 55):", type: "text", ans: "phrase", hint: "Type: phrase" }
+        ]
+      },
+      {
+        id: 15, category: "fundamental", title: "15. Paragraph Writing - II",
+        desc: "Digraph sentences and Rosie the Rabbit's garden adventure (Pages 61–65).",
+        passage: "Rosie, the rabbit visited a garden filled with a lot of fruits and vegetables. She met Appu, a friendly apple and Tinu, a happy carrot. They played hide and seek together. She learnt that fruits and vegetables are good for health.",
+        questionPool: [
+          { id: "m15q1", q: "Complete the sentence (Page 61): The ______ rides on the elephant.", type: "select", options: ["king", "ship", "wheel"], ans: "king" },
+          { id: "m15q2", q: "Complete the sentence (Page 61): Philip plays on the ______.", type: "select", options: ["swing", "bench", "wheel"], ans: "swing" },
+          { id: "m15q3", q: "Complete the sentence (Page 61): The book is on the ______.", type: "select", options: ["bench", "ship", "sea"], ans: "bench" },
+          { id: "m15q4", q: "Complete the sentence (Page 61): There is a ______ on the leaf.", type: "select", options: ["butterfly", "wheel", "ship"], ans: "butterfly" },
+          { id: "m15q5", q: "Complete the sentence (Page 61): The ______ sails on the sea.", type: "select", options: ["ship", "bench", "wheel"], ans: "ship" },
+          { id: "m15q6", q: "Who did Rosie the rabbit meet in the garden?", type: "select", options: ["Appu (a friendly apple) and Tinu (a happy carrot)", "A lion and a bear", "Sam and Tom"], ans: "Appu (a friendly apple) and Tinu (a happy carrot)" },
+          { id: "m15q7", q: "Which game did Rosie play with Appu and Tinu?", type: "select", options: ["Hide and seek", "Football", "Chess"], ans: "Hide and seek" },
+          { id: "m15q8", q: "What important lesson did Rosie learn in the garden?", type: "select", options: ["Fruits and vegetables are good for health", "Rabbits should only eat chocolates", "Parks are boring"], ans: "Fruits and vegetables are good for health" }
+        ]
+      },
+
+      // ---------------- PART 2: GRADE LEVEL SKILLS FOR CLASS 9 (Pages 66-86) ----------------
+      {
+        id: 16, category: "grade", title: "G1. Phrasal Verbs",
+        desc: "Identify and use Phrasal Verbs in context (Page 68 & Page 76).",
+        passage: "Examination Hall Passage (Page 68): The head examiner walked into the examination hall and instructed the students to carry on writing the answers. She looked into the attendance sheet. When the time was up, students were told to hand over the papers. The examiner walked out with the bundles later.",
+        questionPool: [
+          { id: "m16q1", q: "I always ______ early in the morning. (wake up / put on)", type: "select", options: ["wake up", "put on", "turn off"], ans: "wake up" },
+          { id: "m16q2", q: "She ______ her coat before going outside. (sits down / puts on)", type: "select", options: ["puts on", "sits down", "wakes up"], ans: "puts on" },
+          { id: "m16q3", q: "Can you ______ the lights before leaving? (wake up / turn off)", type: "select", options: ["turn off", "wake up", "sit down"], ans: "turn off" },
+          { id: "m16q4", q: "He ______ the phone when it rings. (picks up / sits down)", type: "select", options: ["picks up", "sits down", "puts out"], ans: "picks up" },
+          { id: "m16q5", q: "Please ______ and relax. (put on / sit down)", type: "select", options: ["sit down", "put on", "turn off"], ans: "sit down" },
+          { id: "m16q6", q: "Replace the verb with the correct phrasal verb: 'He rejected the job offer.'", type: "select", options: ["He turned down the job offer.", "He took up the job offer.", "He put out the job offer."], ans: "He turned down the job offer." },
+          { id: "m16q7", q: "Replace the verb with the correct phrasal verb: 'She started a new assignment.'", type: "select", options: ["She took up a new assignment.", "She turned down a new assignment.", "She put out a new assignment."], ans: "She took up a new assignment." },
+          { id: "m16q8", q: "Replace the verb with the correct phrasal verb: 'The fire was extinguished quickly.'", type: "select", options: ["The fire was put out quickly.", "The fire was took up quickly.", "The fire was turned down quickly."], ans: "The fire was put out quickly." }
+        ]
+      },
+      {
+        id: 17, category: "grade", title: "G2. Gerunds and Infinitives",
+        desc: "Distinguish between Gerunds (verb+ing acting as noun) and Infinitives (to + base verb) (Pages 69–70 & 76).",
+        questionPool: [
+          { id: "m17q1", q: "'I like to read mystery novels.' — What is 'to read'?", type: "select", options: ["Infinitive", "Gerund"], ans: "Infinitive" },
+          { id: "m17q2", q: "'Dancing is her passion.' — What is 'Dancing'?", type: "select", options: ["Gerund", "Infinitive"], ans: "Gerund" },
+          { id: "m17q3", q: "'They are excited about playing in the tournament.' — What is 'playing'?", type: "select", options: ["Gerund", "Infinitive"], ans: "Gerund" },
+          { id: "m17q4", q: "Arthi: 'Hey! Do you feel like ______ (go) to the art exhibition?'", type: "select", options: ["going", "to go", "gone"], ans: "going" },
+          { id: "m17q5", q: "Priya: 'I'd love ______ (see) it! But I promised ______ (help) my sister.'", type: "select", options: ["to see, to help", "seeing, helping", "see, help"], ans: "to see, to help" },
+          { id: "m17q6", q: "Correct the error: 'I want going to the market.'", type: "select", options: ["I want to go to the market.", "I wanting to go to the market.", "I want gone to the market."], ans: "I want to go to the market." },
+          { id: "m17q7", q: "Correct the error: 'He enjoys to play cricket.'", type: "select", options: ["He enjoys playing cricket.", "He enjoy to play cricket.", "He enjoys played cricket."], ans: "He enjoys playing cricket." },
+          { id: "m17q8", q: "Correct the error: 'Swimming is better than to run.'", type: "select", options: ["Swimming is better than running.", "Swim is better than to run.", "Swimming is better than ran."], ans: "Swimming is better than running." }
+        ]
+      },
+      {
+        id: 18, category: "grade", title: "G3. Tenses",
+        desc: "Master Simple, Continuous, and Perfect Tenses & Error Correction (Pages 71–72 & 76).",
+        questionPool: [
+          { id: "m18q1", q: "I ______ to the movies last night. (went / have gone)", type: "select", options: ["went", "have gone", "will go"], ans: "went" },
+          { id: "m18q2", q: "By the time I arrived, they ______ their project. (had finished / finish)", type: "select", options: ["had finished", "finish", "are finishing"], ans: "had finished" },
+          { id: "m18q3", q: "If I ______ hard, I will pass the exam. (study / will study)", type: "select", options: ["study", "will study", "studied"], ans: "study" },
+          { id: "m18q4", q: "She ______ in the school choir for three years. (has sung / sang)", type: "select", options: ["has sung", "sang", "singing"], ans: "has sung" },
+          { id: "m18q5", q: "Correct the error: 'I had saw the movie before you mentioned it.'", type: "select", options: ["I had seen the movie before you mentioned it.", "I have saw the movie.", "I seeing the movie."], ans: "I had seen the movie before you mentioned it." },
+          { id: "m18q6", q: "When I reached the station, the train ______ (leave) already.", type: "select", options: ["had left", "leaves", "is leaving"], ans: "had left" },
+          { id: "m18q7", q: "Change to Past Perfect Tense: 'She finishes her homework.'", type: "select", options: ["She had finished her homework.", "She is finishing her homework.", "She will finish her homework."], ans: "She had finished her homework." },
+          { id: "m18q8", q: "Change to Future Perfect Tense: 'I submit the report.'", type: "select", options: ["I will have submitted the report.", "I submitted the report.", "I am submitting the report."], ans: "I will have submitted the report." }
+        ]
+      },
+      {
+        id: 19, category: "grade", title: "G4. Modals",
+        desc: "Use modal auxiliaries (can, may, must, should, ought to, need not, might, could) (Pages 73 & 77).",
+        questionPool: [
+          { id: "m19q1", q: "______ I borrow this pen from you? (Polite permission: May / Might)", type: "select", options: ["May", "Might", "Need"], ans: "May" },
+          { id: "m19q2", q: "You ______ follow the traffic rules. (Strong obligation: can / must)", type: "select", options: ["must", "can", "might"], ans: "must" },
+          { id: "m19q3", q: "You ______ be punctual. (Moral duty: will / ought to)", type: "select", options: ["ought to", "will", "dare"], ans: "ought to" },
+          { id: "m19q4", q: "I can hear you clearly. You ______ shout. (Absence of necessity: may not / need not)", type: "select", options: ["need not", "may not", "must"], ans: "need not" },
+          { id: "m19q5", q: "We ______ always respect our elders. (can / will / should / could)", type: "select", options: ["should", "could", "might"], ans: "should" },
+          { id: "m19q6", q: "Drivers ______ wear the seat belt while driving. (will / ought to / dare to / might)", type: "select", options: ["ought to", "might", "dare to"], ans: "ought to" },
+          { id: "m19q7", q: "It is so sultry and cloudy. It ______ rain. (Possibility: must / shall / might)", type: "select", options: ["might", "shall", "need"], ans: "might" },
+          { id: "m19q8", q: "I ______ run fast when I was young. (Ability in the past - Page 77)", type: "select", options: ["could", "may", "must"], ans: "could" }
+        ]
+      },
+      {
+        id: 20, category: "grade", title: "G5. Degrees of Comparison",
+        desc: "Positive, Comparative, and Superlative degrees of adjectives (Pages 74–75 & 77).",
+        questionPool: [
+          { id: "m20q1", q: "Among the three players, Rahul is the ______. (good / better / best)", type: "select", options: ["best", "better", "good"], ans: "best" },
+          { id: "m20q2", q: "This flower smells ______ than that one. (sweet / sweeter / sweetest)", type: "select", options: ["sweeter", "sweet", "sweetest"], ans: "sweeter" },
+          { id: "m20q3", q: "This tower is not as ______ as the lighthouse. (tall / taller / tallest)", type: "select", options: ["tall", "taller", "tallest"], ans: "tall" },
+          { id: "m20q4", q: "That was the ______ movie I've ever seen. (bad / worse / worst)", type: "select", options: ["worst", "worse", "bad"], ans: "worst" },
+          { id: "m20q5", q: "Correct the sentence: 'Mumbai is big than Pune.'", type: "select", options: ["Mumbai is bigger than Pune.", "Mumbai is biggest than Pune.", "Mumbai is more big than Pune."], ans: "Mumbai is bigger than Pune." },
+          { id: "m20q6", q: "Correct the sentence: 'She is cleverest than her sister.'", type: "select", options: ["She is cleverer than her sister.", "She is clever than her sister.", "She is most clever than her sister."], ans: "She is cleverer than her sister." },
+          { id: "m20q7", q: "Correct the sentence: 'He is best than his cousin in chess.'", type: "select", options: ["He is better than his cousin in chess.", "He is good than his cousin in chess.", "He is more best than his cousin."], ans: "He is better than his cousin in chess." },
+          { id: "m20q8", q: "Comparative form of 'This is the most interesting book' (Page 77):", type: "select", options: ["This book is more interesting than any other book.", "This book is as interesting as other books.", "No other book is interesting."], ans: "This book is more interesting than any other book." }
+        ]
+      },
+      {
+        id: 21, category: "grade", title: "G6. Reported Speech",
+        desc: "Identify reporting verbs and convert Direct Speech into Indirect/Reported Speech (Pages 78 & 85).",
+        questionPool: [
+          { id: "m21q1", q: "Identify the reporting verb in: 'Ram told her to wake up.'", type: "select", options: ["told", "wake up", "her"], ans: "told" },
+          { id: "m21q2", q: "Identify the reporting verb in: 'I wondered why he was screaming.'", type: "select", options: ["wondered", "screaming", "why"], ans: "wondered" },
+          { id: "m21q3", q: "Identify the reporting verb in: 'The mother ordered not to touch the fire.'", type: "select", options: ["ordered", "touch", "fire"], ans: "ordered" },
+          { id: "m21q4", q: "Convert to Reported Speech: John said, \"I am feeling tired.\"", type: "select", options: ["John said that he was feeling tired.", "John said that I am feeling tired.", "John told he is feeling tired."], ans: "John said that he was feeling tired." },
+          { id: "m21q5", q: "Convert to Reported Speech: Rani said, \"We visited the museum yesterday.\"", type: "select", options: ["Rani said that they had visited the museum the previous day.", "Rani said that we visited the museum yesterday.", "Rani asked if they visited the museum."], ans: "Rani said that they had visited the museum the previous day." },
+          { id: "m21q6", q: "Convert to Reported Speech: Shanthi asked, \"Can you help me with my homework?\"", type: "select", options: ["Shanthi asked if I could help her with her homework.", "Shanthi said that can you help me.", "Shanthi ordered to help her."], ans: "Shanthi asked if I could help her with her homework." },
+          { id: "m21q7", q: "Convert to Reported Speech: Arun said, \"I will buy a new book tomorrow.\"", type: "select", options: ["Arun said that he would buy a new book the next day.", "Arun said he will buy a book tomorrow.", "Arun asked to buy a new book."], ans: "Arun said that he would buy a new book the next day." },
+          { id: "m21q8", q: "Convert to Reported Speech (Page 85): \"She is going to school,\" he said.", type: "select", options: ["He said that she was going to school.", "He said that she is going to school.", "He told she was going to school."], ans: "He said that she was going to school." }
+        ]
+      },
+      {
+        id: 22, category: "grade", title: "G7. Active and Passive Voice",
+        desc: "Match verb forms, identify Active vs. Passive voice, and transform sentences (Pages 79 & 84).",
+        questionPool: [
+          { id: "m22q1", q: "Match Active to Passive: 'write' -> ______", type: "select", options: ["is written", "was copied", "has been eaten"], ans: "is written" },
+          { id: "m22q2", q: "Match Active to Passive: 'is drinking' -> ______", type: "select", options: ["is being drunk", "will be finished", "is written"], ans: "is being drunk" },
+          { id: "m22q3", q: "Match Active to Passive: 'has eaten' -> ______", type: "select", options: ["has been eaten", "is being drunk", "was copied"], ans: "has been eaten" },
+          { id: "m22q4", q: "Match Active to Passive: 'will finish' -> ______", type: "select", options: ["will be finished", "has been eaten", "is written"], ans: "will be finished" },
+          { id: "m22q5", q: "Identify the voice: 'Rani presented the report.'", type: "select", options: ["Active Voice", "Passive Voice"], ans: "Active Voice" },
+          { id: "m22q6", q: "Identify the voice: 'The town was destroyed by fire.'", type: "select", options: ["Passive Voice", "Active Voice"], ans: "Passive Voice" },
+          { id: "m22q7", q: "Change into Active Voice (Page 84): 'The homework was completed by Anil.'", type: "select", options: ["Anil completed the homework.", "Anil is completing the homework.", "Anil will complete the homework."], ans: "Anil completed the homework." },
+          { id: "m22q8", q: "Change into Passive Voice (Page 84): 'She is singing a song.'", type: "select", options: ["A song is being sung by her.", "A song was sung by her.", "A song has been sung by her."], ans: "A song is being sung by her." }
+        ]
+      },
+      {
+        id: 23, category: "grade", title: "G8. Reading Comprehension (Pollution & Forests)",
+        desc: "Grade-level analytical passages on Environmental Pollution and Deforestation (Pages 80–81 & 85).",
+        passage: "Passage 1 (Pages 80–81): The word 'pollution' is derived from the Latin word meaning 'to make dirty'. Pollution is the process of polluting water and air by adding harmful substances. It affects water bodies, soil, forests, aquatic life and land-living species. Pollution prevention is the responsibility of private firms, government agencies, and citizens.\n\nPassage 2 (Page 85): Forests provide clean air, shelter, and food. Cutting down trees in large numbers is called deforestation. People destroy forests to make space for farms, buildings and roads.",
+        questionPool: [
+          { id: "m23q1", q: "The word 'pollution' is derived from a Latin word which means ______.", type: "select", options: ["to make dirty", "to conserve nature", "to plant trees"], ans: "to make dirty" },
+          { id: "m23q2", q: "What does 'pollution' mean according to Passage 1?", type: "select", options: ["Adding harmful substances to the environment", "Conserving the environment", "Protecting nature from harm"], ans: "Adding harmful substances to the environment" },
+          { id: "m23q3", q: "______ causes an imbalance in the environment.", type: "select", options: ["Pollution", "Promotion", "Inflation"], ans: "Pollution" },
+          { id: "m23q4", q: "Which of the following is a natural (not human-generated) cause of pollution?", type: "select", options: ["Forest fires", "Inadequate waste disposal", "Setting up factories"], ans: "Forest fires" },
+          { id: "m23q5", q: "The word 'Aquatic' means relating to ______.", type: "select", options: ["water", "soil", "air"], ans: "water" },
+          { id: "m23q6", q: "Prevention of pollution is the responsibility of ______.", type: "select", options: ["All the above (private firms, government, and citizens)", "Only private firms", "Only government"], ans: "All the above (private firms, government, and citizens)" },
+          { id: "m23q7", q: "What is 'deforestation' (Page 85)?", type: "select", options: ["Cutting down trees in large numbers", "Planting more trees", "Protecting wildlife"], ans: "Cutting down trees in large numbers" },
+          { id: "m23q8", q: "Why do people cut down trees according to Passage 2?", type: "select", options: ["To create space for farms, buildings and roads", "To clean the air", "To give animals more space"], ans: "To create space for farms, buildings and roads" }
+        ]
+      },
+      {
+        id: 24, category: "grade", title: "G9. Hints Development",
+        desc: "Develop story and paragraph outlines from structured hints (Pages 82 & 84).",
+        passage: "Hints 1 (Page 82): lion - sleeps - forest - mouse - plays - angry - lion - threatens - kill - mouse asks forgive - promises save one day - lion caught hunter net - mouse cuts net with teeth - lion escapes - thanks mouse.\n\nHints 2 (Page 84): rain - evening - walk - street - umbrella - puddles - cozy cafe - hot tea - happy.",
+        questionPool: [
+          { id: "m24q1", q: "What is the best title for the first set of hints (Lion & Mouse on Page 82)?", type: "select", options: ["The Lion and the Mouse", "The Fox and the Grapes", "The Greedy Dog"], ans: "The Lion and the Mouse" },
+          { id: "m24q2", q: "When expanding story hints into a past-tense narrative, 'lion - sleeps - forest' becomes:", type: "select", options: ["Once a lion was sleeping in a forest.", "A lion will sleep in the forest tomorrow.", "Sleep in the forest, lion!"], ans: "Once a lion was sleeping in a forest." },
+          { id: "m24q3", q: "How did the little mouse save the lion from the hunter's trap?", type: "select", options: ["It cut the net with its sharp teeth", "It called the zookeeper", "It brought mangoes"], ans: "It cut the net with its sharp teeth" },
+          { id: "m24q4", q: "What is the moral of 'The Lion and the Mouse'?", type: "select", options: ["Even the smallest friend can be of great help (Mercy is never wasted)", "Never trust anyone", "Slow and steady wins the race"], ans: "Even the smallest friend can be of great help (Mercy is never wasted)" },
+          { id: "m24q5", q: "In Hints 2 (Page 84), what did the narrator carry while walking down the street on a rainy evening?", type: "select", options: ["An umbrella", "A cricket bat", "A fishing net"], ans: "An umbrella" },
+          { id: "m24q6", q: "In Hints 2 (Page 84), where did the narrator stop to enjoy hot tea?", type: "select", options: ["At a cozy cafe", "At a hospital", "At a railway station"], ans: "At a cozy cafe" }
+        ]
+      },
+      {
+        id: 25, category: "grade", title: "G10. Creative Writing & Helplines",
+        desc: "Poster on Child Labour, Paragraph Writing, and Student Safety Helplines (Pages 83, 86 & 90).",
+        passage: "Back Cover Helpline Information (Page 90): A call can change your life (24x7 toll-free helplines for children below 18 years).\n• Dial CHILDLINE 1098 (Night & Day) if forced into Child Marriage or Child Labour, or if feeling unsafe/abused.\n• Dial 14417 (Education Information Centre) for guidance on Examinations or Higher Education.",
+        questionPool: [
+          { id: "m25q1", q: "Which slogan is most suitable for a poster against Child Labour (Page 83)?", type: "select", options: ["Stop Child Labour! Send Every Child to School, Not to Work!", "Save Water, Save Earth!", "Follow Traffic Signals!"], ans: "Stop Child Labour! Send Every Child to School, Not to Work!" },
+          { id: "m25q2", q: "What is the 24x7 toll-free national helpline number for children in distress or facing Child Labour (Page 90)?", type: "select", options: ["1098 (CHILDLINE)", "14417", "100"], ans: "1098 (CHILDLINE)" },
+          { id: "m25q3", q: "Which Tamil Nadu helpline number can students dial for guidance on Examinations or Higher Education (Page 90)?", type: "select", options: ["14417 (Education Information Centre)", "1098", "108"], ans: "14417 (Education Information Centre)" },
+          { id: "m25q4", q: "Are caller details kept confidential when a student calls 1098 or 14417?", type: "select", options: ["Yes, caller details are kept strictly confidential", "No, they are published in newspapers"], ans: "Yes, caller details are kept strictly confidential" },
+          { id: "m25q5", q: "When writing a descriptive paragraph about 'My Best Friend' (Page 86), what should the first sentence be?", type: "select", options: ["A clear Topic Sentence introducing your best friend", "A concluding thank-you note", "A random list of groceries"], ans: "A clear Topic Sentence introducing your best friend" },
+          { id: "m25q6", q: "When writing about 'My Favourite Food' (Page 83), which details make the paragraph engaging?", type: "select", options: ["Its taste, ingredients, nutritional value, and why you love it", "Only its price", "Unrelated traffic rules"], ans: "Its taste, ingredients, nutritional value, and why you love it" }
+        ]
+      }
+    ];
+
+    const DB_KEY = "thiran_class9_exclusive_db_v1";
+    let db = {
+      activeUserKey: null,
+      users: {}
+    };
+
+    let currentUser = null;
+    let timerInterval = null;
+
+    function makeUserKey(roll, school) {
+      const cleanRoll = roll.trim().toLowerCase().replace(/\s+/g, '');
+      const cleanSchool = school.trim().toLowerCase().replace(/\s+/g, ' ');
+      return `${cleanRoll}__${cleanSchool}`;
+    }
+
+    function hashString(str) {
+      let h = 2166136261 >>> 0;
+      for (let i = 0; i < str.length; i++) {
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    }
+
+    function createSeededRandom(seed) {
+      let s = seed >>> 0;
+      return function() {
+        s = (s + 0x6D2B79F5) >>> 0;
+        let t = Math.imul(s ^ (s >>> 15), 1 | s);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function generateQuestionSetForModule(userKey, modId, poolLength, extraSalt = 0) {
+      const seed = hashString(`${userKey}_c9mod_${modId}_salt_${extraSalt}`);
+      const rand = createSeededRandom(seed);
+      const indices = Array.from({ length: poolLength }, (_, i) => i);
+      for (let i = indices.length - 1; i > 0; i--) {
+        const j = Math.floor(rand() * (i + 1));
+        [indices[i], indices[j]] = [indices[j], indices[i]];
+      }
+      return indices.slice(0, Math.min(QUESTIONS_PER_MODULE, poolLength));
+    }
+
+    function ensureStudentQuestionSets(userObj, userKey) {
+      if (!userObj.assignedSets) userObj.assignedSets = {};
+      if (!userObj.setSalts) userObj.setSalts = {};
+
+      MODULES_DATA.forEach(mod => {
+        if (!userObj.assignedSets[mod.id] || userObj.assignedSets[mod.id].length !== QUESTIONS_PER_MODULE) {
+          const salt = userObj.setSalts[mod.id] || 0;
+          userObj.assignedSets[mod.id] = generateQuestionSetForModule(userKey, mod.id, mod.questionPool.length, salt);
+        }
+      });
+    }
+
+    function loadDatabase() {
+      const raw = localStorage.getItem(DB_KEY);
+      if (raw) {
+        try { db = JSON.parse(raw); } catch (e) { console.error(e); }
+      }
+    }
+
+    function saveDatabase() {
+      if (currentUser && db.activeUserKey) {
+        currentUser.lastUpdated = new Date().toLocaleString();
+        db.users[db.activeUserKey] = currentUser;
+      }
+      localStorage.setItem(DB_KEY, JSON.stringify(db));
+      updateHeaderAndProgress();
+    }
+
+    function initApp() {
+      loadDatabase();
+      renderSavedProfilesList();
+
+      if (Object.keys(db.users).length === 0) {
+        switchAuthTab('register');
+      } else {
+        switchAuthTab('login');
+      }
+
+      if (db.activeUserKey && db.users[db.activeUserKey]) {
+        loginWithKey(db.activeUserKey);
+      }
+    }
+
+    function switchAuthTab(mode) {
+      const errBox = document.getElementById('auth-error');
+      errBox.style.display = 'none';
+
+      if (mode === 'login') {
+        document.getElementById('tab-login-btn').classList.add('active');
+        document.getElementById('tab-reg-btn').classList.remove('active');
+        document.getElementById('login-form').style.display = 'block';
+        document.getElementById('register-form').style.display = 'none';
+        renderSavedProfilesList();
+      } else {
+        document.getElementById('tab-reg-btn').classList.add('active');
+        document.getElementById('tab-login-btn').classList.remove('active');
+        document.getElementById('register-form').style.display = 'block';
+        document.getElementById('login-form').style.display = 'none';
+      }
+    }
+
+    function showAuthError(msg) {
+      const errBox = document.getElementById('auth-error');
+      errBox.innerText = msg;
+      errBox.style.display = 'block';
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const roll = document.getElementById('login-roll').value;
+      const school = document.getElementById('login-school').value;
+      const key = makeUserKey(roll, school);
+
+      if (db.users[key]) {
+        loginWithKey(key);
+      } else {
+        showAuthError(`No saved profile found for Roll No "${roll.trim()}" at "${school.trim()}". Please check your spelling or click "New Class 9 Student" above!`);
+      }
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('reg-name').value.trim();
+      const className = document.getElementById('reg-class').value;
+      const section = document.getElementById('reg-sec').value.trim();
+      const roll = document.getElementById('reg-roll').value.trim();
+      const school = document.getElementById('reg-school').value.trim();
+
+      const key = makeUserKey(roll, school);
+
+      if (db.users[key]) {
+        alert(`Welcome back, ${db.users[key].profile.name}! A profile with Roll No "${roll}" at "${school}" already exists on this device. Resuming your personalized question set!`);
+        loginWithKey(key);
+        return;
+      }
+
+      db.users[key] = {
+        profile: { name, className, section, roll, school },
+        startDate: new Date().toLocaleString(),
+        lastUpdated: new Date().toLocaleString(),
+        elapsedSeconds: 0,
+        lastActiveModuleIndex: 0,
+        assignedSets: {},
+        setSalts: {},
+        modules: {}
+      };
+
+      loginWithKey(key);
+    }
+
+    function loginWithKey(key) {
+      db.activeUserKey = key;
+      currentUser = db.users[key];
+      ensureStudentQuestionSets(currentUser, key);
+      localStorage.setItem(DB_KEY, JSON.stringify(db));
+
+      document.getElementById('welcome-screen').style.display = 'none';
+
+      const resumeIdx = currentUser.lastActiveModuleIndex || 0;
+      renderSidebar();
+      renderModules();
+      showModule(resumeIdx);
+      updateHeaderAndProgress();
+      startLearningTimer();
+    }
+
+    function logoutCurrentStudent() {
+      if (timerInterval) clearInterval(timerInterval);
+      saveDatabase();
+      db.activeUserKey = null;
+      currentUser = null;
+      localStorage.setItem(DB_KEY, JSON.stringify(db));
+
+      document.getElementById('login-roll').value = '';
+      document.getElementById('login-school').value = '';
+      renderSavedProfilesList();
+      switchAuthTab('login');
+      document.getElementById('welcome-screen').style.display = 'flex';
+    }
+
+    function renderSavedProfilesList() {
+      const keys = Object.keys(db.users);
+      const container = document.getElementById('saved-profiles-container');
+      const listEl = document.getElementById('saved-profiles-list');
+
+      if (keys.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
+
+      container.style.display = 'block';
+      listEl.innerHTML = '';
+
+      keys.forEach(k => {
+        const u = db.users[k];
+        const p = u.profile;
+        const doneCount = Object.values(u.modules || {}).filter(m => m.completed).length;
+
+        const pill = document.createElement('div');
+        pill.className = 'profile-pill';
+        pill.onclick = () => loginWithKey(k);
+        pill.innerHTML = `
+          <div class="profile-pill-info">
+            <strong>${p.name}</strong> (${p.className}-${p.section})<br>
+            <span style="color:#64748b; font-size:0.78rem;">Roll No: <b>${p.roll}</b> • School: <b>${p.school}</b></span>
+          </div>
+          <div class="profile-pill-meta">
+            ⭐ ${doneCount}/${MODULES_DATA.length} Modules &rarr;
+          </div>
+        `;
+        listEl.appendChild(pill);
+      });
+    }
+
+    function startLearningTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        if (!currentUser) return;
+        const completedCount = Object.values(currentUser.modules).filter(m => m.completed).length;
+        if (completedCount < MODULES_DATA.length) {
+          currentUser.elapsedSeconds = (currentUser.elapsedSeconds || 0) + 1;
+          document.getElementById('hdr-timer').innerText = formatDuration(currentUser.elapsedSeconds);
+          if (currentUser.elapsedSeconds % 10 === 0) {
+            saveDatabase();
+          }
+        }
+      }, 1000);
+    }
+
+    function formatDuration(sec) {
+      const hrs = Math.floor(sec / 3600);
+      const mins = Math.floor((sec % 3600) / 60);
+      const s = sec % 60;
+      if (hrs > 0) return `${hrs}h ${mins}m ${s}s`;
+      return `${mins}m ${s}s`;
+    }
+
+    function renderSidebar() {
+      const navFun = document.getElementById('nav-list-fundamental');
+      const navGrade = document.getElementById('nav-list-grade');
+      navFun.innerHTML = '';
+      navGrade.innerHTML = '';
+      const activeIdx = currentUser ? (currentUser.lastActiveModuleIndex || 0) : 0;
+
+      MODULES_DATA.forEach((mod, idx) => {
+        const modRecord = currentUser && currentUser.modules[mod.id];
+        const isEarned = modRecord && modRecord.mastered;
+        const btn = document.createElement('button');
+        btn.className = `nav-btn ${idx === activeIdx ? 'active' : ''}`;
+        btn.id = `sidebar-btn-${idx}`;
+        btn.onclick = () => showModule(idx);
+        btn.innerHTML = `
+          <span>${mod.title}</span>
+          <span class="star ${isEarned ? 'earned' : ''}" id="star-${mod.id}">★</span>
+        `;
+        if (mod.category === 'fundamental') {
+          navFun.appendChild(btn);
+        } else {
+          navGrade.appendChild(btn);
+        }
+      });
+    }
+
+    function renderModules() {
+      if (!currentUser) return;
+      const container = document.getElementById('modules-container');
+      container.innerHTML = '';
+      const activeIdx = currentUser.lastActiveModuleIndex || 0;
+
+      MODULES_DATA.forEach((mod, idx) => {
+        const savedMod = currentUser.modules[mod.id] || { answers: {} };
+        const qIndices = currentUser.assignedSets[mod.id];
+        const setVariantNum = (currentUser.setSalts[mod.id] || 0) + 1;
+
+        const card = document.createElement('div');
+        card.className = `module-card ${idx === activeIdx ? 'active' : ''}`;
+        card.id = `mod-card-${idx}`;
+
+        const partBadge = mod.category === 'grade'
+          ? `<span class="grade-tag">Part II • Grade 9 Skill</span>`
+          : `<span class="set-badge">Part I • Fundamental Skill</span>`;
+
+        let html = `
+          <div class="mod-header-row">
+            <h2>${mod.title}</h2>
+            <div style="display:flex; gap:6px; align-items:center;">
+              ${partBadge}
+              <span class="set-badge">🎲 Set #${setVariantNum} (Roll: ${currentUser.profile.roll})</span>
+            </div>
+          </div>
+          <p style="color:var(--muted); margin-top:0;">${mod.desc}</p>
+        `;
+        if (mod.passage) {
+          html += `<div class="passage">${mod.passage.replace(/\n/g, '<br>')}</div>`;
+        }
+
+        html += `<div class="question-block">`;
+        qIndices.forEach((poolIdx, displayNum) => {
+          const qObj = mod.questionPool[poolIdx];
+          const savedVal = (savedMod.answers && savedMod.answers[qObj.id]) || '';
+          html += `<div style="margin-bottom:15px;">
+            <span class="question-title">Q${displayNum + 1}. ${qObj.q}</span>`;
+          if (qObj.type === 'text') {
+            html += `<input type="text" class="q-input" id="input-${qObj.id}" value="${savedVal}" placeholder="${qObj.hint || 'Type answer...'}">`;
+          } else if (qObj.type === 'select') {
+            html += `<select class="q-input" id="input-${qObj.id}">
+              <option value="">-- Select Answer --</option>
+              ${qObj.options.map(opt => `<option value="${opt.replace(/"/g, '&quot;')}" ${savedVal === opt ? 'selected' : ''}>${opt}</option>`).join('')}
+            </select>`;
+          }
+          html += `</div>`;
+        });
+        html += `</div>`;
+
+        html += `
+          <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
+            <button class="btn-check" onclick="gradeModule(${idx})">✔️ Save &amp; Check Answers</button>
+            <button class="btn-shuffle" onclick="shuffleModuleSet(${idx})" title="Draw a fresh combination of 5 questions from the workbook pool">🔄 Try a New Question Set</button>
+            ${idx < MODULES_DATA.length - 1 ? `<button class="btn-secondary" onclick="showModule(${idx + 1})">Next Module &rarr;</button>` : `<button class="btn-secondary" onclick="showCertificate()">🎓 View My Certificate &rarr;</button>`}
+          </div>
+          <div class="feedback" id="fb-${mod.id}"></div>
+        `;
+
+        card.innerHTML = html;
+        container.appendChild(card);
+      });
+    }
+
+    function shuffleModuleSet(idx) {
+      if (!currentUser) return;
+      const mod = MODULES_DATA[idx];
+      currentUser.setSalts[mod.id] = (currentUser.setSalts[mod.id] || 0) + 1;
+      currentUser.assignedSets[mod.id] = generateQuestionSetForModule(
+        db.activeUserKey, mod.id, mod.questionPool.length, currentUser.setSalts[mod.id]
+      );
+      saveDatabase();
+      renderModules();
+      showModule(idx);
+    }
+
+    function showModule(idx) {
+      if (currentUser) {
+        currentUser.lastActiveModuleIndex = idx;
+        saveDatabase();
+      }
+      document.getElementById('cert-view').classList.remove('active');
+      document.getElementById('btn-cert-nav').classList.remove('active');
+
+      document.querySelectorAll('#modules-container .module-card').forEach((card, i) => {
+        card.classList.toggle('active', i === idx);
+      });
+      MODULES_DATA.forEach((_, i) => {
+        const btn = document.getElementById(`sidebar-btn-${i}`);
+        if (btn) btn.classList.toggle('active', i === idx);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function gradeModule(idx) {
+      if (!currentUser) return;
+      const mod = MODULES_DATA[idx];
+      const qIndices = currentUser.assignedSets[mod.id];
+      let correct = 0;
+      const prevAnswers = (currentUser.modules[mod.id] && currentUser.modules[mod.id].answers) || {};
+      const answers = { ...prevAnswers };
+
+      qIndices.forEach(poolIdx => {
+        const qObj = mod.questionPool[poolIdx];
+        const inputEl = document.getElementById(`input-${qObj.id}`);
+        const rawVal = inputEl.value.trim();
+        answers[qObj.id] = rawVal;
+
+        if (rawVal.toLowerCase() === qObj.ans.toLowerCase()) {
+          inputEl.classList.remove('wrong-input');
+          inputEl.classList.add('correct-input');
+          correct++;
+        } else {
+          inputEl.classList.remove('correct-input');
+          inputEl.classList.add('wrong-input');
+        }
+      });
+
+      const total = qIndices.length;
+      const pct = Math.round((correct / total) * 100);
+      const nowStr = new Date().toLocaleDateString('en-IN', {
+        day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+      });
+
+      currentUser.modules[mod.id] = {
+        completed: correct > 0,
+        mastered: correct === total,
+        correct,
+        total,
+        pct,
+        dateStr: nowStr,
+        answers
+      };
+
+      const fb = document.getElementById(`fb-${mod.id}`);
+      fb.style.display = 'block';
+      if (correct === total) {
+        fb.style.background = 'var(--success-bg)';
+        fb.style.color = 'var(--success)';
+        fb.innerHTML = `🌟 Fantastic, ${currentUser.profile.name}! You scored ${correct}/${total} (100% Mastery)! Logged on ${nowStr}.`;
+        document.getElementById(`star-${mod.id}`).classList.add('earned');
+      } else {
+        fb.style.background = 'var(--warning-bg)';
+        fb.style.color = 'var(--warning)';
+        fb.innerHTML = `📝 Progress Saved for ${currentUser.profile.name}! You got ${correct}/${total} (${pct}%). Fix the red boxes to earn a star, or click "🔄 Try a New Question Set" for fresh questions!`;
+      }
+
+      saveDatabase();
+    }
+
+    function updateHeaderAndProgress() {
+      if (!currentUser) return;
+      const p = currentUser.profile;
+      document.getElementById('header-student-info').innerHTML =
+        `👤 <strong>${p.name}</strong> (${p.className}-${p.section} | Roll: <strong>${p.roll}</strong>) • ${p.school}`;
+
+      let totalQuestions = MODULES_DATA.length * QUESTIONS_PER_MODULE;
+      let totalCorrect = 0;
+      let completedModules = 0;
+
+      MODULES_DATA.forEach(mod => {
+        const rec = currentUser.modules[mod.id];
+        if (rec) {
+          totalCorrect += rec.correct;
+          if (rec.completed) completedModules++;
+        }
+      });
+
+      const overallPct = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+
+      document.getElementById('hdr-modules').innerText = `${completedModules} / ${MODULES_DATA.length}`;
+      document.getElementById('hdr-percent').innerText = `${overallPct}%`;
+      document.getElementById('hdr-bar').style.width = `${overallPct}%`;
+      document.getElementById('hdr-timer').innerText = formatDuration(currentUser.elapsedSeconds || 0);
+    }
+
+    function showCertificate() {
+      if (!currentUser) return;
+      document.querySelectorAll('#modules-container .module-card').forEach(c => c.classList.remove('active'));
+      MODULES_DATA.forEach((_, i) => {
+        const btn = document.getElementById(`sidebar-btn-${i}`);
+        if (btn) btn.classList.remove('active');
+      });
+      document.getElementById('cert-view').classList.add('active');
+      document.getElementById('btn-cert-nav').classList.add('active');
+
+      const p = currentUser.profile;
+      document.getElementById('cert-name').innerText = p.name;
+      document.getElementById('cert-meta').innerHTML =
+        `<strong>${p.className} (Section ${p.section})</strong> • Roll No: <strong>${p.roll}</strong><br>School: <strong>${p.school}</strong>`;
+
+      let totalQ = MODULES_DATA.length * QUESTIONS_PER_MODULE;
+      let totalC = 0, modDone = 0;
+      const tbodyLeft = document.getElementById('log-table-left');
+      const tbodyRight = document.getElementById('log-table-right');
+      tbodyLeft.innerHTML = '';
+      tbodyRight.innerHTML = '';
+
+      MODULES_DATA.forEach(mod => {
+        const rec = currentUser.modules[mod.id];
+        if (rec && rec.completed) {
+          totalC += rec.correct;
+          modDone++;
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${mod.title}</strong></td>
+          <td>${rec && rec.completed ? `<span class="badge-done">${rec.mastered ? '⭐ Mastered' : '✔️ Done'}</span>` : `<span class="badge-pending">Pending</span>`}</td>
+          <td><strong>${rec ? `${rec.correct}/${rec.total} (${rec.pct}%)` : '0%'}</strong></td>
+          <td>${rec && rec.dateStr ? rec.dateStr : '—'}</td>
+        `;
+        if (mod.category === 'fundamental') {
+          tbodyLeft.appendChild(tr);
+        } else {
+          tbodyRight.appendChild(tr);
+        }
+      });
+
+      const masteryPct = totalQ > 0 ? Math.round((totalC / totalQ) * 100) : 0;
+      const durationStr = formatDuration(currentUser.elapsedSeconds || 0);
+
+      document.getElementById('cert-mastery').innerText = `${masteryPct}%`;
+      document.getElementById('cert-duration').innerText = durationStr;
+      document.getElementById('cert-mod-count').innerText = `${modDone} / ${MODULES_DATA.length}`;
+      document.getElementById('cert-span-dates').innerText =
+        `Started On: ${currentUser.startDate || 'Today'}   |   Last Activity: ${currentUser.lastUpdated || 'Just now'}`;
+
+      const banner = document.getElementById('cert-congrats');
+      if (modDone === MODULES_DATA.length) {
+        banner.innerHTML = `🎉 CONGRATULATIONS, ${p.name.toUpperCase()}! You have completed all 25 modules (15 Fundamental + 10 Grade Level Skills) of the THIRAN Class 9 English Workbook within ${durationStr} of active learning time, achieving ${masteryPct}% overall mastery!`;
+      } else {
+        banner.innerHTML = `👏 Great effort, ${p.name}! So far you have completed ${modDone} of 25 modules in ${durationStr} with ${masteryPct}% overall mastery. Keep going at your own pace!`;
+      }
+    }
+
+    // Single-Page A4 Portrait High-Res PNG Generator (Certificate + All 25 Modules in 2-Column Table)
+    function downloadA4PortraitSheet() {
+      if (!currentUser) return;
+      const p = currentUser.profile;
+
+      let totalQ = MODULES_DATA.length * QUESTIONS_PER_MODULE;
+      let totalC = 0, modDone = 0;
+      MODULES_DATA.forEach(mod => {
+        const rec = currentUser.modules[mod.id];
+        if (rec && rec.completed) {
+          totalC += rec.correct;
+          modDone++;
+        }
+      });
+      const masteryPct = totalQ > 0 ? Math.round((totalC / totalQ) * 100) : 0;
+      const durationStr = formatDuration(currentUser.elapsedSeconds || 0);
+
+      // Standard A4 Portrait at 150 DPI: 1240 x 1754 px
+      const canvas = document.createElement('canvas');
+      canvas.width = 1240;
+      canvas.height = 1754;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // ============================================================
+      // TOP HALF: ROYAL BLUE & GOLD CERTIFICATE (y: 30 to 755)
+      // ============================================================
+      const certX = 40, certY = 30, certW = 1160, certH = 720;
+      const bgGrad = ctx.createRadialGradient(620, 390, 80, 620, 390, 700);
+      bgGrad.addColorStop(0, '#1e3a8a');
+      bgGrad.addColorStop(0.55, '#0f2557');
+      bgGrad.addColorStop(1, '#071330');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(certX, certY, certW, certH);
+
+      const goldGrad = ctx.createLinearGradient(certX, certY, certX + certW, certY + certH);
+      goldGrad.addColorStop(0, '#fef08a');
+      goldGrad.addColorStop(0.35, '#eab308');
+      goldGrad.addColorStop(0.7, '#fde047');
+      goldGrad.addColorStop(1, '#ca8a04');
+
+      ctx.strokeStyle = goldGrad;
+      ctx.lineWidth = 8;
+      ctx.strokeRect(certX + 4, certY + 4, certW - 8, certH - 8);
+
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(certX + 18, certY + 18, certW - 36, certH - 36);
+
+      ctx.fillStyle = '#facc15';
+      ctx.font = 'bold 26px Georgia, serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('✦', certX + 42, certY + 48);
+      ctx.fillText('✦', certX + certW - 42, certY + 48);
+      ctx.fillText('✦', certX + 42, certY + certH - 30);
+      ctx.fillText('✦', certX + certW - 42, certY + certH - 30);
+
+      // Emblem
+      ctx.beginPath();
+      ctx.arc(620, certY + 58, 28, 0, Math.PI * 2);
+      ctx.fillStyle = goldGrad;
+      ctx.fill();
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = '#ffffff';
+      ctx.stroke();
+
+      ctx.font = '26px Segoe UI Emoji, sans-serif';
+      ctx.fillStyle = '#071330';
+      ctx.fillText('🏆', 620, certY + 67);
+
+      ctx.fillStyle = '#fde047';
+      ctx.font = 'bold 16px Segoe UI, sans-serif';
+      ctx.fillText('DEPARTMENT OF SCHOOL EDUCATION • TAMIL NADU (THIRAN CLASS 9)', 620, certY + 114);
+
+      ctx.fillStyle = '#fde047';
+      ctx.font = 'bold 36px Georgia, serif';
+      ctx.fillText('CERTIFICATE OF MASTERY & COMPLETION', 620, certY + 158);
+
+      ctx.fillStyle = '#fde68a';
+      ctx.font = 'italic 18px Georgia, serif';
+      ctx.fillText('This prestigious certificate is proudly presented to', 620, certY + 190);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 42px Georgia, serif';
+      ctx.fillText(p.name.toUpperCase(), 620, certY + 240);
+
+      ctx.strokeStyle = '#eab308';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(340, certY + 254);
+      ctx.lineTo(900, certY + 254);
+      ctx.stroke();
+
+      ctx.fillStyle = '#fef9c3';
+      ctx.font = 'bold 20px Segoe UI, sans-serif';
+      ctx.fillText(`${p.className} (Section ${p.section})   •   Roll No: ${p.roll}`, 620, certY + 290);
+      ctx.fillStyle = '#facc15';
+      ctx.font = 'bold 21px Segoe UI, sans-serif';
+      ctx.fillText(`School: ${p.school}`, 620, certY + 320);
+
+      ctx.fillStyle = 'rgba(250, 204, 21, 0.14)';
+      ctx.strokeStyle = '#eab308';
+      ctx.lineWidth = 1.5;
+      ctx.fillRect(100, certY + 340, 1040, 74);
+      ctx.strokeRect(100, certY + 340, 1040, 74);
+
+      ctx.fillStyle = '#fef08a';
+      ctx.font = 'bold 17px Segoe UI, sans-serif';
+      const msg1 = modDone === MODULES_DATA.length
+        ? `CONGRATULATIONS, ${p.name.toUpperCase()}! Completed all 25 modules (Fundamental & Grade Level)`
+        : `Great effort, ${p.name}! Completed ${modDone} of 25 modules (Fundamental & Grade Level)`;
+      const msg2 = `of the THIRAN Class 9 English Workbook within ${durationStr} of active time (${masteryPct}% mastery)!`;
+      ctx.fillText(msg1, 620, certY + 372);
+      ctx.fillText(msg2, 620, certY + 398);
+
+      const statCards = [
+        { label: 'OVERALL MASTERY SCORE', val: `${masteryPct}%`, x: 140 },
+        { label: 'TOTAL COMPLETION TIME', val: durationStr, x: 470 },
+        { label: 'MODULES COMPLETED', val: `${modDone} / 25`, x: 800 }
+      ];
+      statCards.forEach(sc => {
+        ctx.fillStyle = 'rgba(7, 19, 48, 0.85)';
+        ctx.strokeStyle = '#eab308';
+        ctx.lineWidth = 2;
+        ctx.fillRect(sc.x, certY + 434, 300, 88);
+        ctx.strokeRect(sc.x, certY + 434, 300, 88);
+
+        ctx.fillStyle = '#fde68a';
+        ctx.font = 'bold 13px Segoe UI, sans-serif';
+        ctx.fillText(sc.label, sc.x + 150, certY + 462);
+
+        ctx.fillStyle = '#facc15';
+        ctx.font = 'bold 30px Segoe UI, sans-serif';
+        ctx.fillText(sc.val, sc.x + 150, certY + 504);
+      });
+
+      ctx.fillStyle = '#fde68a';
+      ctx.font = '14px Segoe UI, sans-serif';
+      ctx.fillText(
+        `Started On: ${currentUser.startDate || 'Today'}   |   Last Activity: ${currentUser.lastUpdated || 'Just now'}`,
+        620, certY + 554
+      );
+
+      ctx.strokeStyle = 'rgba(234, 179, 8, 0.45)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(240, certY + 574);
+      ctx.lineTo(1000, certY + 574);
+      ctx.stroke();
+
+      ctx.fillStyle = '#facc15';
+      ctx.font = 'bold 17px Georgia, serif';
+      ctx.fillText('✦   DESIGNED BY THIRAVIYA KUMAR G   ✦', 620, certY + 602);
+
+      // ============================================================
+      // BOTTOM HALF: TWO-COLUMN 25-MODULE DAILY WORK LOG (y: 785 to 1700)
+      // ============================================================
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#0f2557';
+      ctx.font = 'bold 20px Segoe UI, sans-serif';
+      ctx.fillText('📅 Daily Work Log — Part I: Fundamental (1–15) & Part II: Grade 9 Skills (G1–G10)', 40, 785);
+
+      const drawLogColumn = (modsArray, startX, startY, colWidth, headerTitle) => {
+        const hHeight = 36;
+        const rHeight = 52;
+        ctx.fillStyle = '#0f2557';
+        ctx.fillRect(startX, startY, colWidth, hHeight);
+
+        ctx.fillStyle = '#fde047';
+        ctx.font = 'bold 12px Segoe UI, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(headerTitle, startX + 8, startY + 23);
+        ctx.fillText('STATUS', startX + 235, startY + 23);
+        ctx.fillText('SCORE', startX + 345, startY + 23);
+        ctx.fillText('DATE', startX + 425, startY + 23);
+
+        modsArray.forEach((mod, i) => {
+          const ry = startY + hHeight + i * rHeight;
+          const rec = currentUser.modules[mod.id];
+
+          ctx.fillStyle = i % 2 === 0 ? '#ffffff' : '#f8fafc';
+          ctx.fillRect(startX, ry, colWidth, rHeight);
+          ctx.strokeStyle = '#cbd5e1';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(startX, ry, colWidth, rHeight);
+
+          ctx.fillStyle = '#1e293b';
+          ctx.font = 'bold 13px Segoe UI, sans-serif';
+          ctx.fillText(mod.title.substring(0, 28), startX + 8, ry + 31);
+
+          if (rec && rec.completed) {
+            ctx.fillStyle = rec.mastered ? '#16a34a' : '#ca8a04';
+            ctx.font = 'bold 12px Segoe UI, sans-serif';
+            ctx.fillText(rec.mastered ? '★ Mastered' : '✔ Done', startX + 235, ry + 31);
+          } else {
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '12px Segoe UI, sans-serif';
+            ctx.fillText('Pending', startX + 235, ry + 31);
+          }
+
+          ctx.fillStyle = '#0f2557';
+          ctx.font = 'bold 13px Segoe UI, sans-serif';
+          ctx.fillText(rec ? `${rec.pct}%` : '0%', startX + 345, ry + 31);
+
+          ctx.fillStyle = '#475569';
+          ctx.font = '11px Segoe UI, sans-serif';
+          const shortDate = rec && rec.dateStr ? rec.dateStr.split(',')[0] : '—';
+          ctx.fillText(shortDate, startX + 425, ry + 31);
+        });
+      };
+
+      const funMods = MODULES_DATA.filter(m => m.category === 'fundamental');
+      const gradeMods = MODULES_DATA.filter(m => m.category === 'grade');
+
+      drawLogColumn(funMods, 40, 800, 565, 'PART I: FUNDAMENTAL (1–15)');
+      drawLogColumn(gradeMods, 635, 800, 565, 'PART II: GRADE 9 SKILLS (G1–G10)');
+
+      // Helpline Reminder Box under Right Column (since right column has 10 rows vs 15 on left)
+      const helpY = 800 + 36 + 10 * 52 + 18;
+      ctx.fillStyle = '#eff6ff';
+      ctx.strokeStyle = '#1e3a8a';
+      ctx.lineWidth = 1.5;
+      ctx.fillRect(635, helpY, 565, 235);
+      ctx.strokeRect(635, helpY, 565, 235);
+
+      ctx.fillStyle = '#1e3a8a';
+      ctx.font = 'bold 16px Segoe UI, sans-serif';
+      ctx.fillText('📞 Student 24×7 Toll-Free Helplines (Page 90)', 655, helpY + 35);
+      ctx.fillStyle = '#334155';
+      ctx.font = '14px Segoe UI, sans-serif';
+      ctx.fillText('• CHILDLINE 1098: Night & Day help for children (<18 yrs)', 655, helpY + 70);
+      ctx.fillText('  against Child Labour, Child Marriage, or Abuse.', 655, helpY + 94);
+      ctx.fillText('• Helpline 14417: Education Information Centre for', 655, helpY + 130);
+      ctx.fillText('  Examinations, Higher Education & Student Guidance.', 655, helpY + 154);
+      ctx.fillStyle = '#16a34a';
+      ctx.font = 'bold 13px Segoe UI, sans-serif';
+      ctx.fillText('✔ Caller details are kept strictly confidential.', 655, helpY + 195);
+
+      // Footer
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#0f2557';
+      ctx.font = 'bold 16px Segoe UI, sans-serif';
+      ctx.fillText('THIRAN Class 9 English Interactive Workbook  •  Designed by Thiraviya Kumar G', 620, 1726);
+
+      const safeName = p.name.replace(/[^a-z0-9]/gi, '_');
+      const link = document.createElement('a');
+      link.download = `THIRAN_Class9_A4_Certificate_${safeName}_Roll_${p.roll}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    function resetCurrentStudent() {
+      if (!currentUser) return;
+      if (confirm(`Are you sure you want to clear all saved answers and reset the timer for ${currentUser.profile.name}? (Other students' profiles on this device will NOT be affected).`)) {
+        currentUser.modules = {};
+        currentUser.elapsedSeconds = 0;
+        currentUser.lastActiveModuleIndex = 0;
+        currentUser.startDate = new Date().toLocaleString();
+        saveDatabase();
+        renderSidebar();
+        renderModules();
+        showModule(0);
+      }
+    }
+
+    window.onload = initApp;
+  </script>
+</body>
+</html>
